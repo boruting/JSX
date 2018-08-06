@@ -41,3 +41,7 @@ var getFiles = {
 
     }
 };
+//获取文件夹下的所有图片
+getFiles.getImageFiles("./public/");
+//获取文件夹下的所有文件
+getFiles.getFileList("./public/");
