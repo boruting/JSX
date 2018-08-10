@@ -1,3 +1,4 @@
+﻿#include "importLnkd.jsx"
 var docFile = app.activeDocument.fullName;//获取全名
 var docPat =docFile.path;//获取路径
 
@@ -32,21 +33,5 @@ function testingPSD(pro)
         var pat =docPat + "/" + pro;
        return pat; 
     }
-    
-}
-
-/**
- * 导入连接对象
-*/
-function importLnkd (pat)
-{
-    var idPlc = charIDToTypeID( "Plc " );
-    var desc634 = new ActionDescriptor();
-    var idnull = charIDToTypeID( "null" );
-    desc634.putPath( idnull, new File( pat));//这里应该是路径加获取到到名字 
-    // 这里应该检测下psd是否存在
-    var idLnkd = charIDToTypeID( "Lnkd" );//定义为连接对象
-    desc634.putBoolean( idLnkd, true );
-    executeAction( idPlc, desc634, DialogModes.NO );
     
 }
