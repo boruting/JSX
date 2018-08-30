@@ -67,7 +67,9 @@ function parseFile(pat, assetsName, typeVal,extensionPath) {
     var excelFile = new File(pat);// 需要打开xlsx文档    
     var type = typeVal;// 切图类型
     var pngOutAssetsName = assetsName;//需要保存图片的文件
-    var saveOption = new ExportOptionsSaveForWeb();
+    	saveOption = new ExportOptionsSaveForWeb();
+		saveOption.format = SaveDocumentType.PNG;
+        saveOption.PNG8 = false;
 
     //alert( "文档是:  " + excelFile.exists );
 
