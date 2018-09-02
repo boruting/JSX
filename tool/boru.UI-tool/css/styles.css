@@ -8,6 +8,10 @@ hr{
     border: 0px;
     border-top: 2px solid#6c6c6c;
 }
+hrXY{
+    position: absolute;
+    margin-top: -35px ;
+}
 p
 {
     
@@ -45,7 +49,16 @@ input[type="text"]
     color: #85b6f2;
     
 }
-
+.rename{
+    width: 95%;
+    position: absolute;
+    top: 230px;
+}
+#cutBox{
+    position: absolute;
+    width:100%;
+    height: 230px;
+}
 
 #fileBox{
     position: absolute;
@@ -183,4 +196,21 @@ input[type="text"]
 
   .btn-border.btn-green:hover {
     color: #85b6f2;
+  }
+  #txtPre{
+    position: absolute;
+    width:150px;
+    margin-left: 40px;
+    margin-top: -36px;
+  }
+  #txtSuf{
+    width:150px;
+    position: absolute;
+    margin-left: 40px;
+    margin-top: -36px;
+  }
+  .btnBox1{
+    position: absolute;
+    margin-left: 190px;
+    margin-top: -86px;
   }
