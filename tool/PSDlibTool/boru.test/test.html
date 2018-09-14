@@ -1,0 +1,27 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <script type="text/javascript" src="jsx/json2.js"></script>
+  <script>
+    var tt = function (){
+  var students = new Array();
+  students[0] = "pika";
+  students[1] = "hello";
+  students[2] = "hey";
+  var json = JSON.stringify(students);
+  return json;
+}
+var c = tt()
+var o = JSON.parse(c);
+alert(o[0]);
+  </script>
+</head>
+
+<body>
+
+  
+</body>
+
+</html>
