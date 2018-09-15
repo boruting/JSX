@@ -21,7 +21,7 @@ var onload = function () {
 	psdPath = libPath + "psd/";
 
 	//alert (psdPath);
-    cs.evalScript("testJsx('"+ psdPath +"')",function(result){
+    cs.evalScript("getPsdName('"+ psdPath +"')",function(result){
 		
 		
 		psdName = result ;
@@ -43,7 +43,7 @@ var onload = function () {
 var listBtn = function (arrayObj) {
 	//alert(libPath);
 	var div = new Array();
-	alert(arrayObj.length);
+	//alert(arrayObj.length);
 	for (var i = 0; i < arrayObj.length; i++) {
 
 		
