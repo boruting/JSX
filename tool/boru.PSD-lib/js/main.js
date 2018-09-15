@@ -4,15 +4,18 @@
  */
 var test = function () {
 
+	//alert(psdNameList);
+	onload();
 	listBtn(psdNameList);
- 
+	//BUG 有新的文件出现需要载入2次
 }
 
 /**
  * 初始化
  * 
  */
-window.onload = function () {
+//window.onload = function () {
+var onload = function () {
 	cs = new CSInterface();
 	libPath = txt_path.value;
 	psdPath = libPath + "psd/";
@@ -30,7 +33,7 @@ window.onload = function () {
 	
 	
 
-	//listBtn(psdName);
+
 
 }
 /**
@@ -40,9 +43,10 @@ window.onload = function () {
 var listBtn = function (arrayObj) {
 	//alert(libPath);
 	var div = new Array();
-	
+	alert(arrayObj.length);
 	for (var i = 0; i < arrayObj.length; i++) {
 
+		
 		var imgName = arrayObj[i].substring(0,arrayObj[i].length-4) + ".png";
 		var n = arrayObj[i];
 		var imgPath = libPath + "image/" +imgName;
@@ -51,6 +55,11 @@ var listBtn = function (arrayObj) {
 		var br = document.createElement("p");
 		div[i].innerHTML = '<input type="image" id="' + n + '" src="' + imgPath + '" onclick="addPSD(this.id)" />';
 		br.innerHTML = '<p>';//分割排版用
+		if(document.getElementById(n)){ 
+			//存在 
+			continue;
+			
+		}
 		document.body.appendChild(br);
 		//alert (div[i]);
 		document.body.appendChild(div[i]);
