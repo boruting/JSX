@@ -1,14 +1,16 @@
-﻿//var path = "E:/workspace/test/PSD";
+﻿/**
+ * 获取 path 下的所有文件 
+ * @param {*} path 存放psd文件的路径
+ */
 var testJsx = function (path) {
-  //var path = "E:/workspace/test/PSD";
   var psdFolder = Folder(path);
   var psdFolderList = psdFolder.getFiles();
   //声明一个新数组
   var arr = new Array();
+  
   //遍历所有文件  获取到文件到名字
   for (var i = 0; i < psdFolderList.length; i++) {
     var fileName = decodeURI(psdFolderList[i].name);
-    //fileName = '"'+fileName+'"';
     //存放到新数组里
     arr[i] = fileName
   }

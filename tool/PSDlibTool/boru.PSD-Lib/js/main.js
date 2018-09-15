@@ -1,19 +1,11 @@
+/**
+ * 载入PSD文件
+ * 
+ */
 var test = function () {
-	// cs = new CSInterface();
-	// var libPath = txt_path.value;
-	// var psdPath = libPath + "psd";
-	
-	
-    // cs.evalScript("testJsx('"+ psdPath +"')",function(result){
-	// 	psdName = result ;
-	// 	//alert (window);
-    //     return psdName;
-	// });
-	//alert("psdName.length");
+
 	listBtn(psdNameList);
-	
-   
-    
+ 
 }
 
 /**
@@ -42,11 +34,11 @@ window.onload = function () {
 
 }
 /**
- * 生产PSD 按钮列表
- * @param {*} arrayObj psd 路径和名字的数组
+ * 生成PSD 按钮列表
+ * @param {*} arrayObj psd名字的数组
  */
 var listBtn = function (arrayObj) {
-	alert(libPath);
+	//alert(libPath);
 	var div = new Array();
 	
 	for (var i = 0; i < arrayObj.length; i++) {
@@ -58,7 +50,7 @@ var listBtn = function (arrayObj) {
 		div[i] = document.createElement("div");
 		var br = document.createElement("p");
 		div[i].innerHTML = '<input type="image" id="' + n + '" src="' + imgPath + '" onclick="addPSD(this.id)" />';
-		br.innerHTML = '<p>';
+		br.innerHTML = '<p>';//分割排版用
 		document.body.appendChild(br);
 		//alert (div[i]);
 		document.body.appendChild(div[i]);
@@ -66,14 +58,8 @@ var listBtn = function (arrayObj) {
 	}
 }
 /**
- * 获取 PSD 文件 路径和名字
- */
-var arr = function () {
-	var arrayObj = ["aaaaaa", "bbbbb", "cccc", "dddd", "eeee"];
-	return arrayObj;
-}
-/**
  * 添加连接对象到 对当前PSD中
+ * @param {*} id 动态创建按钮的ID 也是psd文件名字 
  */
 function addPSD(id) {
 	//alert(id);
@@ -83,4 +69,14 @@ function addPSD(id) {
 	cs.evalScript("importLnkd('"+ pat +"')");
 }
 	
-	
+
+
+
+
+/**
+ * 获取 PSD 文件 路径和名字测试用
+ */
+var arr = function () {
+	var arrayObj = ["aaaaaa", "bbbbb", "cccc", "dddd", "eeee"];
+	return arrayObj;
+}
