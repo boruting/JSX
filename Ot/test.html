@@ -1,49 +1,67 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-
-<head>
-	<meta charset="UTF-8">
-	<title>Test</title>
+<head> 
+<meta charset="UTF-8" />
+<title>test</title> 
+<style type="text/css">
+	  #div1 {
+            margin:0 auto;
+			width:600px;
+           
+        }
+  
+</style>
 
 </head>
-
 <body>
-	<div>
-		<canvas id="myCanvas" width="600" height="450" style="border:1px solid #c3c3c3;">
-		</canvas>
-	</div>
-	
-	
-	
-
+<div id="div1">
+	<canvas id="itemCanvas" width="600" height="300" style="border:1px solid #d3d3d3;"></canvas>
+	<button  onclick="hecheng()">合成</button>
+	<button  onclick="addYuanShi()">添加翡翠原石</button>
+</div>
 	<script type="text/javascript">
-
-	var c=document.getElementById("myCanvas");
-	var cxt=c.getContext("2d");
-	var img=new Image()
-	img.src="/i/eg_flower.png"
-	cxt.drawImage(img,0,0);
-
-	</script>
-	<script type="text/javascript">
-		var c=document.getElementById("myCanvas");
-		var cxt=c.getContext("2d");
-		var cxt1=c.getContext("2d");
-		var cxt2=c.getContext("2d");
+		var item1Arr_1 = [];//银线
+		var item1Arr_2 = [];//翡翠原石
 		var w = 50;
 		var h = 50;
 		var x = 10;
 		var y = 10;
+		var itemName = "翡翠原石";
 		
-		cxt.fillStyle="#FF0000";
-		cxt.fillRect(x,y,w,h);
-		cxt1.fillStyle="#FF0000";
-		cxt1.fillRect(x+60,y,w,h);
-		cxt2.fillStyle="#FF0000";
-		cxt2.fillRect(x+120,y,w,h);
+		var itemC = document.getElementById("itemCanvas");
+		var item0 = itemC.getContext("2d");
+		var item1 = itemC.getContext("2d");
+		var item2 = itemC.getContext("2d");
+		var item3 = itemC.getContext("2d");
+		var itemTxt = itemC.getContext("2d");
+		var img=new Image();
 		
+		itemTxt.font="14px Arial";
+		itemTxt.fillStyle="#635231";
+		
+		if(item1Arr_2.length<5){
+		
+			itemTxt.fillStyle="#FF0000";
+		}
+		
+		//itemTxt.fillText(itemName+"*"+item1Arr_2.length,x,y+70);
+		
+		//item0.fillRect(x,y,w,h);
+		//item0.fillStyle="#FF0000";
+		img.src="606.png";
+		img.onload = function () {  
+           item0.drawImage(img,10,10,50,50); 
+		   
+        }
+		function addYuanShi(){
+		
+		item1Arr_2.push("翡翠原石");
+		
+		itemTxt.fillText(itemName+"*"+item1Arr_2.length,x,y+70);
+		
+	}
 	</script>
-	
-</body>
 
+
+</body>
 </html>
