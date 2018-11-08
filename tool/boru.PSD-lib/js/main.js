@@ -4,24 +4,22 @@
  */
 var test = function () {
 
-	//alert(psdNameList);
-	onload();
 	listBtn(psdNameList);
 	//BUG 有新的文件出现需要载入2次
+ 
 }
 
 /**
  * 初始化
  * 
  */
-//window.onload = function () {
-var onload = function () {
+window.onload = function () {
 	cs = new CSInterface();
 	libPath = txt_path.value;
 	psdPath = libPath + "psd/";
 
 	//alert (psdPath);
-    cs.evalScript("getPsdName('"+ psdPath +"')",function(result){
+    cs.evalScript("testJsx('"+ psdPath +"')",function(result){
 		
 		
 		psdName = result ;
@@ -33,7 +31,7 @@ var onload = function () {
 	
 	
 
-
+	//listBtn(psdName);
 
 }
 /**
@@ -43,10 +41,9 @@ var onload = function () {
 var listBtn = function (arrayObj) {
 	//alert(libPath);
 	var div = new Array();
-	//alert(arrayObj.length);
+	
 	for (var i = 0; i < arrayObj.length; i++) {
 
-		
 		var imgName = arrayObj[i].substring(0,arrayObj[i].length-4) + ".png";
 		var n = arrayObj[i];
 		var imgPath = libPath + "image/" +imgName;

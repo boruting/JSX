@@ -7,6 +7,9 @@
 	<script type="text/javascript">
 	Item1Arr_1 = [];//银线
 	Item1Arr_2 = [];//翡翠原石
+	//txt_Item2 = document.getElementById("txt_Item2");
+	//txt_Item2.style.colr = "Red";
+	//if (Item1Arr_2.length<5){txt_Item2.style.color="Red";}
 	
 	function addHuwan(){
 		
@@ -17,34 +20,42 @@
 	function addYinxian(){
 		Item1Arr_1.push("银线");
 		//alert(Item1Arr_1);
+		if (Item1Arr_1.length<3){txt_Item1.style.color="Red";}
+		else{txt_Item1.style.color="green";}
 		txt_Item1.value = "银线*" + Item1Arr_1.length;
+		
 	
 	}	
 	function addYuanShi(){
 		Item1Arr_2.push("翡翠原石");
 		//alert(Item1Arr_1);
+		if (Item1Arr_2.length<5){txt_Item2.style.color="Red";}
+		else{txt_Item2.style.color="green";}
 		txt_Item2.value = "翡翠原石*" + Item1Arr_2.length;
+		
 	
 	}
 	function hecheng (){
-		
+		var n1 = Math.round(Math.random()*100); 
 		if(txt_ItemHuwan.value=="皮护腕"&& Item1Arr_1.length >= 3 && Item1Arr_2.length >= 5)
-		{
+		{	
+			if(n1<98){
 			
-			Item1Arr_1.splice(0,3);//删除数组中对应的"数量"
-			Item1Arr_2.splice(0,5);//删除数组中对应的"数量"
-			//alert(Item1Arr_1.length);
-			txt_Item1.value = "翡翠原石*" + Item1Arr_1.length;
-			txt_Item2.value = "翡翠原石*" + Item1Arr_2.length;
-			txt_ItemHuwan.value="银护腕";
-			alert("银护腕合成成功");
+				Item1Arr_1.splice(0,3);//删除数组中对应的"数量"
+				Item1Arr_2.splice(0,5);//删除数组中对应的"数量"
+				//alert(Item1Arr_1.length);
+				txt_Item1.value = "翡翠原石*" + Item1Arr_1.length;
+				txt_Item2.value = "翡翠原石*" + Item1Arr_2.length;
+				txt_ItemHuwan.value="银护腕";
+				//alert("银护腕合成成功");	
 			
+			}else{
+				alert("合成失败");
+			}		
 		}else{
 		
-			alert("失败 缺少材料");
+			alert("缺少材料");
 		}
-	
-			
 		
 	}
 
@@ -55,7 +66,8 @@
 	<div>
 		<div>
 			<input type="text" id="txt_ItemHuwan" class="fontColor" value="皮护腕">
-			<button  onclick="addHuwan()">添加</button> 
+			<button  onclick="addHuwan()">添加</button> 银护腕概率 98%
+			
 		</div><br><br>
 		
 		<div>

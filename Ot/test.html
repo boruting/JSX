@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Test</title>
+
+</head>
+
+<body>
+	<div>
+		<canvas id="myCanvas" width="600" height="450" style="border:1px solid #c3c3c3;">
+		</canvas>
+	</div>
+	
+	
+	
+
+	<script type="text/javascript">
+
+	var c=document.getElementById("myCanvas");
+	var cxt=c.getContext("2d");
+	var img=new Image()
+	img.src="/i/eg_flower.png"
+	cxt.drawImage(img,0,0);
+
+	</script>
+	<script type="text/javascript">
+		var c=document.getElementById("myCanvas");
+		var cxt=c.getContext("2d");
+		var cxt1=c.getContext("2d");
+		var cxt2=c.getContext("2d");
+		var w = 50;
+		var h = 50;
+		var x = 10;
+		var y = 10;
+		
+		cxt.fillStyle="#FF0000";
+		cxt.fillRect(x,y,w,h);
+		cxt1.fillStyle="#FF0000";
+		cxt1.fillRect(x+60,y,w,h);
+		cxt2.fillStyle="#FF0000";
+		cxt2.fillRect(x+120,y,w,h);
+		
+	</script>
+	
+</body>
+
+</html>
