@@ -21,8 +21,12 @@
 
     if (excelFile.exists) {
         //alert("这里是1");
+        //获取Excel文件中的数据 
+        //var lis = getExcelLines(excelFile,"test007");
+        //alert("这里是lis  "+ lis );
         var lines = getExcelLines(excelFile);
-        //alert("这里是2");
+        
+        
         if (lines) {
             // alert("这里是lines");
             var len = lines.length;
@@ -60,7 +64,8 @@
                             textItem.contents = text.replace(/&#10;/g, "\n").replace(/&#13;/g, "\r").replace(/\r?\n/g, "\r");
                             // alert("这里是  "+textItem.contents);
                            
-                            var parentPath = docFile.path.substr(0,docFile.path.length-4) + "/" + pngOutAssetsName;
+                            //var parentPath = docFile.path.substr(0,docFile.path.length-4) + "/" + pngOutAssetsName;
+                            var parentPath = docFile.parent.parent.fsName + "/" + pngOutAssetsName;
                             //alert("这里是  "+parentPath);
                             var folder = new Folder(parentPath);
                             
@@ -75,7 +80,7 @@
                                 // alert("这里是tFileName.indexOf)  "+tFileName.indexOf);	
                                 var nFileName = tFileName.split("/");
                                 var nFileName = nFileName[0];		//获取表格第一列内容中的/前的文字
-                                var folder_ = new Folder(docFile.path + "/" + pngOutAssetsName + "/" + nFileName);
+                                var folder_ = new Folder(parentPath + "/" + nFileName);
 
                                 if (!folder_.exists) {
                                     folder_.create();
