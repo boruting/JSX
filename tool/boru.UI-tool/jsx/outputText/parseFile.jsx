@@ -54,9 +54,17 @@
                         var ignore = line[3];                           //检测第4列是否内用是否等于"不导出"						
                         if (ignore != 1) {
                             //alert("这里是ignore");
+							//if(tabType == "tabType"){
+							//	amendTextContents(text.replace(/&#10;/g, "\n").replace(/&#13;/g, "\r").replace(/\r?\n/g, "\r"));
+							//}
                             textItem.contents = text.replace(/&#10;/g, "\n").replace(/&#13;/g, "\r").replace(/\r?\n/g, "\r");
                             // alert("这里是  "+textItem.contents);
-                            var folder = new Folder(docFile.path + "/" + pngOutAssetsName);
+                           
+                            var parentPath = docFile.path.substr(0,docFile.path.length-4) + "/" + pngOutAssetsName;
+                            //alert("这里是  "+parentPath);
+                            var folder = new Folder(parentPath);
+                            
+                            
                             // alert("这里是  "+docFile.path);
                             if (!folder.exists) {
                                 // alert("这里是folder.exists ");					//创建文件夹
@@ -78,7 +86,7 @@
                             //处理固定像素
                             // alert("这里是dan   "+dan);
                             if (type == "type1") {  //alert("这里是dan2   "+dan);
-                                var outfile = new File(docFile.path + "/" + pngOutAssetsName + "/" + tFileName + ".png");//保存图片到
+                                var outfile = new File(parentPath + "/" + tFileName + ".png");//保存图片到
                                 //alert("这里是outfile   "+outfile);
                                 doc.exportDocument(outfile, ExportType.SAVEFORWEB, saveOption);
                                 //alert("这里是000000000000000   "); 
@@ -93,7 +101,7 @@
                                 //剪裁画布大小 到 图层实际像素 
                                 cropDounds();
                                 //web方式保存图片到指定目录
-                                var outfile = new File(docFile.path + "/" + pngOutAssetsName + "/" + tFileName + ".png");//保存图片到
+                                var outfile = new File(parentPath + "/" + tFileName + ".png");//保存图片到
                                 //$.writeln(outfile);
                                 doc.exportDocument(outfile, ExportType.SAVEFORWEB, saveOption);
                                 //还原历史记录到打开时
@@ -110,4 +118,19 @@
         }
     }
     alert("处理完成!");
+}
+
+var amendTextContents = function (txtContents){
+
+	var docRef = activeDocument;
+	var layers = docRef.layers;
+    
+    for (var i=0,len=layers.length;i < len;i++){
+         
+        layer = layers[i];
+        if (layer.kind == "LayerKind.TEXT") {
+            textItem = layer.textItem;
+            textItem.contents = txtContents;
+		}
+    }
 }
