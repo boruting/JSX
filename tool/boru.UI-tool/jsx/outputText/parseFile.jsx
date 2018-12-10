@@ -16,15 +16,17 @@
     	saveOption = new ExportOptionsSaveForWeb();
 		saveOption.format = SaveDocumentType.PNG;
         saveOption.PNG8 = false;
-
+    var sheetName =  docFile.name.split(".");
+    var sheetName = sheetName[0];
+    //alert("这里是  "+ sheetName);
     //alert( "文档是:  " + excelFile.exists );
 
     if (excelFile.exists) {
         //alert("这里是1");
         //获取Excel文件中的数据 
-        //var lis = getExcelLines(excelFile,"test007");
+        var lines = getExcelLines(excelFile,sheetName);
         //alert("这里是lis  "+ lis );
-        var lines = getExcelLines(excelFile);
+        //var lines = getExcelLines(excelFile);
         
         
         if (lines) {

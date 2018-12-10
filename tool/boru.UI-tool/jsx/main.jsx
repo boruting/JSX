@@ -45,14 +45,16 @@ var testJsx = function (in_extendPath){
  * 样式切图
  * @param {*} pat excelFile
  * @param {*} assetsName 文件夹名称
+ * @param {*} sheetName 表格页签名称
  * @param {*} typeVal 切图类型 （实际像素type_2,固定尺寸type_1）
  * @param {*} in_extendPath CEP路径
  */
-var outputText = function (pat, assetsName, typeVal,in_extendPath){
-    
+//var outputText = function (pat, assetsName,sheetName, typeVal,in_extendPath){
+var outputText = function (pat, assetsName, typeVal,in_extendPath){   
     JsxType = "outputText";
     initEnzymes(in_extendPath,JsxType);
    
+    //parseFile(pat, assetsName,sheetName, typeVal);
     parseFile(pat, assetsName, typeVal);
    
 }
