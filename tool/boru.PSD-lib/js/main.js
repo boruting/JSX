@@ -1,39 +1,51 @@
 /**
- * 载入PSD文件
- * 
- */
-var test = function () {
-
-	listBtn(psdNameList);
-	//BUG 有新的文件出现需要载入2次
- 
-}
-
-/**
  * 初始化
  * 
  */
 window.onload = function () {
+	
+	load();
+
+}
+/**
+ * 载入PSD文件
+ * 
+ */
+
+var load = function () {
+
+	btnUpdate(function(list){
+
+		//alert("这里是加载 "+ list);
+		listBtn(list);
+
+	});
+
+
+}
+
+/**
+ * 获取PSD文件路径信息
+ * 
+ */
+var btnUpdate = function(callback){
+	
 	cs = new CSInterface();
 	libPath = txt_path.value;
 	psdPath = libPath + "psd/";
-
 	//alert (psdPath);
     cs.evalScript("testJsx('"+ psdPath +"')",function(result){
-		
-		
+
 		psdName = result ;
 		psdNameList = psdName.split(",");
 		//alert (psdName.length);
-		
-        return psdNameList;
+		callback(psdNameList);
+		//return psdNameList;
 	});
-	
-	
-
-	//listBtn(psdName);
 
 }
+
+
 /**
  * 生成PSD 按钮列表
  * @param {*} arrayObj psd名字的数组
