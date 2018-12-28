@@ -34,7 +34,7 @@ var btnUpdate = function(callback){
 	libPath = txt_path.value;
 	psdPath = libPath + "psd/";
 	//alert (psdPath);
-    cs.evalScript("testJsx('"+ psdPath +"')",function(result){
+    cs.evalScript("getPsdFileName('"+ psdPath +"')",function(result){
 
 		psdName = result ;
 		psdNameList = psdName.split(",");
