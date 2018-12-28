@@ -1,0 +1,66 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <!--载入样式表-->
+  <link href="css/styles.css" type="text/css" rel="stylesheet">
+  <!--载入JavaScript-->
+  <script type="text/javascript" src="js/main.js"></script>
+  <!--载入官方 JavaScript 库-->
+  <script type="text/javascript" src="js/adobe/CSInterface.js"></script>
+
+  <!--载入JQuery-->
+  <script type="text/javascript" src="js/jquery/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $(".fileBtn").change(function () {
+        var arrs = $(this).val().split('\\');
+        var filename = arrs[arrs.length - 1];
+        $(".show").html(filename);
+      });
+    });
+  </script>
+</head>
+
+<body>
+
+  <div class="cutBox"><!-- 样式切图 -->
+    <div>
+      <!--弹窗组 -->
+      <p class="fontColor">选择对应的文档(xlsx)</p>
+      <div id="fileBox">
+        <a href='javascript:void(0);' class="newBtn btn-gree ">选择文件</a>
+        <div class="show"></div>
+        <input type="file" id="fileid" class="fileBtn">
+      </div>
+    </div>
+    <br>
+ 
+    <!--div>
+      !--excel Sheet表单名称--
+      <p class="fontColor">表格页签名称</p>
+      <input type="text" id="txt_sheet" class="fontColor" value="Sheet1"><br>
+    </div-->
+    <div class="txtBox">
+      <p class="fontColor">选择切图类型:</p>
+      <div>
+        <select id="typeVal" class="fontColor">
+          <option id="type_1" value="type1">固定尺寸</option>
+          <option id="type_2" value="type2">实际像素</option>
+        </select>
+      </div>
+
+    </div>
+    <div>
+     <!-- 返回名字-->
+    </div>
+
+    <div class="btnBox">
+      <button id="btn_main" class="btn  btn-green btn-border" onclick="outputTextJs()">开始切图</button>
+      <br>
+    </div>
+  </div>
+</body>
+
+</html>
