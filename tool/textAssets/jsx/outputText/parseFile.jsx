@@ -14,7 +14,7 @@ function parseFile(pat, assetsName, typeVal) {
         saveOption = new ExportOptionsSaveForWeb();
         saveOption.format = SaveDocumentType.PNG;
         saveOption.PNG8 = false;
-        
+
         var nameSplit = docFile.name.split(".")[0].split("_");
         var sheetName = nameSplit[0];
         //处理psd名字 psd分类 (xxx0_0 的 _0) 有复制原有的  没有 空
@@ -27,9 +27,9 @@ function parseFile(pat, assetsName, typeVal) {
         }
 
 
-        
+
         //alert("这里是psd文件名  " + PSD_suf);
-        
+
 
         if (excelFile.exists) {
 
@@ -45,22 +45,13 @@ function parseFile(pat, assetsName, typeVal) {
                     // alert("这里是len");
                     //找到文本层，进行替换
                     var layers = doc.layers;
-                    var textItem = null;
-                    for (var j = 0, llen = layers.length; j < llen; j++) {
-                        var layer = layers[j];
-                        if (layer.layers) {
-                            // alert("替换文本用psd，不允许有子文件夹");
-                            continue;
-                        }
-                        //不做多层级遍历，也不判定文本名称
-                        if (layer.kind == "LayerKind.TEXT") {
-                            textItem = layer.textItem;
-                            break;
-                        }
-                    }
+
+                    //var textItem = null;
+                    var textItem = getChildLayer_textItem(layers);
+
                     //alert("这里是textItem"+textItem);
                     if (textItem) {
-                        //alert("这里是textItem");
+                        //alert("textItem是: "+textItem);
                         var oldText = textItem.contents;
                         for (var i = 1; i < len; i++) {                   //从第二行开始读
                             var line = lines[i];
@@ -94,6 +85,7 @@ function parseFile(pat, assetsName, typeVal) {
                                     var fileName = nFileName[0];//获取表格第一列内容中的/前的文字
                                     var imgSerial = "_" + nFileName[1].split("_")[1];
                                     var imgName = nFileName[1].split("_")[0];
+                                    //alert(imgName);
                                     var imgName = imgName + PSD_suf + imgSerial + ".png";
 
 
@@ -149,6 +141,53 @@ function parseFile(pat, assetsName, typeVal) {
     } else { alert("这货不是 .xlsx 格式哦"); }
 }
 
+/**
+ * 获取文本图层 包括图层组的子级
+ * @param {*} layers 
+ */
+
+
+function getChildLayer_textItem(layers) {
+    // alert("len: " +layers.length);
+    var textItem = null;
+    for (var i = 0; i < layers.length; i++) {
+        var layer = layers[i];
+        if (layer.typename == "LayerSet") {
+
+            var textItem = getChildLayer_textItem(layer.layers);
+            //getChildLayer_textItem(layer.layers);
+            //alert("这里textItem: " + textItem);
+            return textItem;
+        }
+        if (layer.kind == "LayerKind.TEXT") {
+
+            textItem = layer.textItem;
+            //alert("这里图层名: " + layer.name);
+            return textItem;
+        }
+
+
+    }
+}
+/**
+ * 
+
+for (var j = 0, llen = layers.length; j < llen; j++) {
+    var layer = layers[j];
+    if (layer.typename == "LayerSet") {
+        // alert("替换文本用psd，不允许有子文件夹");
+        alert("是否进a" + layer.layers);
+        //continue;
+    }
+    //不做多层级遍历，也不判定文本名称
+    if (layer.kind == "LayerKind.TEXT") {
+        alert("是否进来了");
+        textItem = layer.textItem;
+        alert("textItem:  " + textItem);
+        break;
+    }
+}
+ */
 
 var amendTextContents = function (txtContents) {
 
