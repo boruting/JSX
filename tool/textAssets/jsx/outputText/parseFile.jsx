@@ -83,10 +83,11 @@ function parseFile(pat, assetsName, typeVal) {
                                     // alert("这里是tFileName.indexOf)  "+tFileName.indexOf);	
                                     var nFileName = tFileName.split("/");
                                     var fileName = nFileName[0];//获取表格第一列内容中的/前的文字
-                                    var imgSerial = "_" + nFileName[1].split("_")[1];
-                                    var imgName = nFileName[1].split("_")[0];
+                                    //var imgSerial = "_" + nFileName[1].split("_")[1];
+                                    //var imgName = nFileName[1].split("_")[0];
                                     //alert(imgName);
-                                    var imgName = imgName + PSD_suf + imgSerial + ".png";
+                                    var imgName = nFileName[1];
+                                    var imgName = imgName + PSD_suf + ".png";
 
 
 
