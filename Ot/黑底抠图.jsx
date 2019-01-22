@@ -19,7 +19,7 @@ var tongDaoXuanQU = function (idRGB) {
     var idfsel = charIDToTypeID("fsel");
     var idT = charIDToTypeID("T   ");
     var idsetd = charIDToTypeID("setd");
-    var idsetd = charIDToTypeID("setd");
+    
 
     ref.putProperty(idChnl, idfsel);
     desc.putReference(idnull, ref);
