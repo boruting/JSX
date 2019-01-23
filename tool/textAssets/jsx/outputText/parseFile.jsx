@@ -1,9 +1,10 @@
 ﻿/**
  * @param {*} pat xlsx文档全路径
  * @param {*} assetsName 需要保存图片的文件
- * @param {*} typeVal 切图类型
+ * @param {*} imgTypeVal 切图类型
+ * @param {*} nameTypeVal 图片名字类型 nameType2 为 序号_类型名 nameType1 为 类型名_序号
  */
-function parseFile(pat, assetsName, typeVal) {
+function parseFile(pat, assetsName, imgTypeVal, nameTypeVal) {
     var doc = app.activeDocument;
     var docFile = doc.fullName;//当前文档的路径全名
     if (pat.substr(-5) === ".xlsx") {
@@ -85,12 +86,20 @@ function parseFile(pat, assetsName, typeVal) {
                                     var fileName = nFileName[0];//获取表格第一列内容中的/前的文字
                                     //var imgSerial = "_" + nFileName[1].split("_")[1];
                                     //var imgName = nFileName[1].split("_")[0];
-                                    //alert(imgName);
+                                    //alert("imgName");
                                     var imgName = nFileName[1];
-                                    var imgName = imgName + PSD_suf + ".png";
+
+                                    if (nameTypeVal == "nameType2") {//图片名字类型 序号_类型名
+                                        var imgName = imgName + PSD_suf + ".png";
+                                    } else if (nameTypeVal == "nameType1") {//图片名字类型 类型名_序号
+                                        var PSD_suf = nameSplit[1];
+                                        var imgName = PSD_suf + imgName + ".png";
+                                    } else {
+                                        alert("错误: " + nameTypeVal);
+                                    }
 
 
-
+                                    //alert(imgName);
                                     var folder_ = new Folder(parentPath + "/" + fileName);
 
                                     if (!folder_.exists) {
@@ -101,15 +110,13 @@ function parseFile(pat, assetsName, typeVal) {
 
                                 //处理固定像素
                                 // alert("这里是dan   "+dan);
-                                if (typeVal == "type1") {  //alert("这里是dan2   "+dan);
+                                if (imgTypeVal == "imgType1") {  //alert("这里是dan2   "+dan);
 
                                     var outfile = new File(parentPath + "/" + fileName + "/" + imgName);//保存图片到
 
                                     doc.exportDocument(outfile, ExportType.SAVEFORWEB, saveOption);
 
-                                }
-                                //处理实际像素
-                                if (typeVal == "type2") {
+                                } else if (imgTypeVal == "imgType2") {//处理实际像素
                                     // alert("这里是  2");
                                     //栅格化图层样式
                                     rasterizeLayer();
@@ -123,8 +130,11 @@ function parseFile(pat, assetsName, typeVal) {
                                     doc.exportDocument(outfile, ExportType.SAVEFORWEB, saveOption);
                                     //还原历史记录到打开时
                                     returnRecords();
-
+                                } else {
+                                    alert("错误: " + imgTypeVal);
                                 }
+
+
 
                             }
 
