@@ -1,4 +1,4 @@
-﻿#target photoshop
+﻿//#target photoshop
 
 //if 1,outFolder   //if 0.outPicture
 var OPTION = 1;
@@ -139,7 +139,7 @@ function LayersOutandPos(Layers) {
 
 function SelectionandSave(layerRef) {
     if ((layerRef.bounds[2].value - layerRef.bounds[0].value != 0) || (layerRef.bounds[3].value - layerRef.bounds[1].value != 0)) {
-    layerRef.visible = true;
+        layerRef.visible = true;
         DocSub.selection.selectAll();
         // app.activeDocument.selection.copy();
 
