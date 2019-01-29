@@ -16,5 +16,9 @@ window.onload=function(){
             
         css.evalScript('$.evalFile("' + str + "/jsx/fileImportLnkd.jsx" + '")');
     });
+    $("#ModifyLayerInfo").click(function () {
+                   
+        css.evalScript('$.evalFile("' + str + "/jsx/ModifyLayerInfo.jsx" + '")');
+    });
 
 }
