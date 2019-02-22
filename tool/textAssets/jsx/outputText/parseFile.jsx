@@ -14,6 +14,7 @@ function parseFile(pat, assetsName, imgTypeVal, nameTypeVal) {
         var excelFile = new File(pat); //通过 pat 给的路径 打开xlsx文档
         saveOption = new ExportOptionsSaveForWeb();
         saveOption.format = SaveDocumentType.PNG;
+        //saveOption.quality = 100;
         saveOption.PNG8 = false;
 
         var nameSplit = docFile.name.split(".")[0].split("_");
@@ -89,7 +90,7 @@ function parseFile(pat, assetsName, imgTypeVal, nameTypeVal) {
                                     //alert("imgName");
                                     var imgName = nFileName[1];
 
-                                    if (nameTypeVal == "nameType2") {//图片名字类型 序号_类型名
+                                    if (nameTypeVal == "nameType2") {//图片名字类型 序号_类型名 常规类型
                                         var imgName = imgName + PSD_suf + ".png";
                                     } else if (nameTypeVal == "nameType1") {//图片名字类型 类型名_序号
                                         var PSD_suf = nameSplit[1];
