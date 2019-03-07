@@ -40,15 +40,15 @@
                     <Geometry>
                         <Size>  <!-- 设置扩展面板尺寸-->
                             <Height>450</Height>
-                            <Width>300</Width>
+                            <Width>200</Width>
                         </Size>             
                         <MaxSize>
                             <Height>900</Height>
-                            <Width>900</Width>
+                            <Width>200</Width>
                         </MaxSize>
                         <MinSize>
                             <Height>300</Height>
-                            <Width>300</Width>
+                            <Width>200</Width>
                         </MinSize>
                     </Geometry>
                     <Icons>  <!-- 设置扩展面板图标-->

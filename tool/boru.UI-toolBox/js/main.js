@@ -20,5 +20,13 @@ window.onload=function(){
                    
         css.evalScript('$.evalFile("' + str + "/jsx/ModifyLayerInfo.jsx" + '")');
     });
+    $("#BlackCutout").click(function () {
+                   
+        css.evalScript('$.evalFile("' + str + "/jsx/BlackCutout.jsx" + '")');
+    });
+    $("#fontInfoExportExcel").click(function () {
+                   
+        css.evalScript('$.evalFile("' + str + "/jsx/fontInfoExportExcel.jsx" + '")');
+    });
 
 }
