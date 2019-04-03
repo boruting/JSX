@@ -80,20 +80,35 @@ function parseFile(pat, assetsName, imgTypeVal, nameTypeVal) {
                                     // alert("这里是folder.exists ");					//创建文件夹
                                     folder.create();
                                 }
-                                //判断表格第一列文字中是否存在"/" 如果有创建子级问价夹 
+                                //判断表格第一列文字中是否存在"/" 如果有创建子级文件夹
                                 if (tFileName.indexOf('/') != -1) {
                                     // alert("这里是tFileName.indexOf)  "+tFileName.indexOf);	
+                                    
                                     var nFileName = tFileName.split("/");
-                                    var fileName = nFileName[0];//获取表格第一列内容中的/前的文字
+
+                                    //处理是否还有子级 文件夹需要创建
+                                    if(nFileName.length<3){
+                                        var fileName = nFileName[0];
+                                        var imgName = nFileName[1];
+                                        //alert("小于 "+fileName);
+                                    }else{
+                                        var fileName = nFileName.slice(0,nFileName.length-1);//获取表格第一列内容中的/前的文字                                       
+                                        var fileName = fileName.toString().replace(/,/,"/");//把 , 转换成 / 
+                                        var imgName = nFileName[nFileName.length-1];//取数组最后的文字(/最后的文字)
+                                        //alert("imgName =  "+imgName);                                         
+                                    }                                                                      
+                                    //获取表格第一列内容中的/前的文字
                                     //var imgSerial = "_" + nFileName[1].split("_")[1];
                                     //var imgName = nFileName[1].split("_")[0];
                                     //alert("imgName");
-                                    var imgName = nFileName[1];
 
                                     if (nameTypeVal == "nameType2") {//图片名字类型 序号_类型名 常规类型
+                                        //alertx(imgName + " " + PSD_suf)
                                         var imgName = imgName + PSD_suf + ".png";
+                                       
                                     } else if (nameTypeVal == "nameType1") {//图片名字类型 类型名_序号
                                         var PSD_suf = nameSplit[1];
+                                        //alert(imgName + " " + PSD_suf)
                                         var imgName = PSD_suf + imgName + ".png";
                                     } else {
                                         alert("错误: " + nameTypeVal);
