@@ -85,11 +85,12 @@ function parseFile(pat, assetsName, imgTypeVal, nameTypeVal) {
                                     // alert("这里是tFileName.indexOf)  "+tFileName.indexOf);	
                                     
                                     var nFileName = tFileName.split("/");
-
+                                   
                                     //处理是否还有子级 文件夹需要创建
                                     if(nFileName.length<3){
                                         var fileName = nFileName[0];
                                         var imgName = nFileName[1];
+                                        //alert(nFileName);
                                         //alert("小于 "+fileName);
                                     }else{
                                         var fileName = nFileName.slice(0,nFileName.length-1);//获取表格第一列内容中的/前的文字                                       
@@ -110,7 +111,16 @@ function parseFile(pat, assetsName, imgTypeVal, nameTypeVal) {
                                         var PSD_suf = nameSplit[1];
                                         //alert(imgName + " " + PSD_suf)
                                         var imgName = PSD_suf + imgName + ".png";
-                                    } else {
+                                    } else if(nameTypeVal == "nameType0") {
+                                        var folder_num = new Folder(parentPath + "/" + fileName + "/" +nameSplit[1]);
+
+                                        if (!folder_num.exists) {
+                                            folder_num.create();
+                                        }
+                                        var imgName = nameSplit[1] + "/" + imgName +  ".png";
+                                        //alert("是个啥:    " + imgName);
+
+                                    }else{
                                         alert("错误: " + nameTypeVal);
                                     }
 
