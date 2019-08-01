@@ -58,8 +58,9 @@ function parseFile(pat, assetsName, imgTypeVal, nameTypeVal) {
                         for (var i = 1; i < len; i++) {                   //从第二行开始读
                             var line = lines[i];
                             var tFileName = line[0];                      //翻译的资源名次
-                            var text = translate || line[1];               //要输出的文本
                             var translate = line[2];                        //翻译的内容
+                            var text = translate || line[1];               //要输出的文本
+                            
                             var ignore = line[3];                           //检测第4列是否内用是否等于"不导出"						
                             if (ignore != 1) {
                                 //alert("这里是ignore");
