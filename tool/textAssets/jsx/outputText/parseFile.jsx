@@ -94,8 +94,8 @@ function parseFile(pat, assetsName, imgTypeVal, nameTypeVal) {
                                         //alert(nFileName);
                                         //alert("小于 "+fileName);
                                     }else{
-                                        var fileName = nFileName.slice(0,nFileName.length-1);//获取表格第一列内容中的/前的文字                                       
-                                        var fileName = fileName.toString().replace(/,/,"/");//把 , 转换成 / 
+                                        var fileName = nFileName.slice(0,nFileName.length-1);//获取表格第一列内容中的/前的文字                                                           
+                                        var fileName = fileName.toString().replace(/,/g,"/");//把 , 转换成 /                                        
                                         var imgName = nFileName[nFileName.length-1];//取数组最后的文字(/最后的文字)
                                         //alert("imgName =  "+imgName);                                         
                                     }                                                                      
