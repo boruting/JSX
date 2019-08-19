@@ -28,5 +28,9 @@ window.onload=function(){
                    
         css.evalScript('$.evalFile("' + str + "/jsx/fontInfoExportExcel.jsx" + '")');
     });
+    $("#openArtLib").click(function () {
+                   
+        css.evalScript('$.evalFile("' + str + "/jsx/openArtLib.jsx" + '")');
+    });
 
 }
