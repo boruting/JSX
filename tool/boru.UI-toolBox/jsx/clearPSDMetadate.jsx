@@ -1,14 +1,17 @@
-﻿var doc = app.activeDocument;
-var layers = doc.layers;
+﻿
 
 /**
  * 打开智能对象
  *    当前问题打开的是选定图层
  */
-var openSmartObject = function () {
-    var idplacedLayerEditContents = stringIDToTypeID("placedLayerEditContents");
+var openSmartObject = function (id) {
+    
     var desc = new ActionDescriptor();
-    executeAction(idplacedLayerEditContents, desc, DialogModes.NO);
+    var ref = new ActionReference();
+    ref.putIdentifier(charIDToTypeID('Lyr '), id);
+    desc.putReference(charIDToTypeID('null'), ref);
+    executeAction(charIDToTypeID('slct'), desc, DialogModes.NO);
+    executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO);
 
 }
 /**
@@ -50,6 +53,7 @@ var deleteDocumentAncestorsMetadata = function () {
  * @param {*} layers 
  */
 var layersAncestorsMetadata = function (layers) {
+ 
     
     for (var i = 0, len = layers.length; i < len; i++) {
         var layer = layers[i];
@@ -59,14 +63,14 @@ var layersAncestorsMetadata = function (layers) {
         //$.writeln(layer.kind);
         if (layer.kind == "LayerKind.SMARTOBJECT") {
             $.writeln(layer.name);
-            
-            openSmartObject();//打开智能对象
+            var id = layer.id;
+            openSmartObject(id);//打开智能对象
+            layersAncestorsMetadata(app.activeDocument.layers);
             deleteDocumentAncestorsMetadata();//清理数据
             
-
-
         }
     }
 }
 
-layersAncestorsMetadata(layers);
+layersAncestorsMetadata(app.activeDocument.layers);
+alert("PSD文件 原始数据 MXP 清理完成");
