@@ -6,7 +6,7 @@ window.onload=function(){
 
     $("#CleanMetadata").click(function () {
             
-        css.evalScript('$.evalFile("' + str + "/jsx/CleanMetadata.jsx" + '")');
+        css.evalScript('$.evalFile("' + str + "/jsx/clearPSDMetadate.jsx" + '")');
     });
     $("#CornerEditor").click(function () {
             
