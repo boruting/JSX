@@ -12,6 +12,7 @@ var openSmartObject = function (id) {
     desc.putReference(charIDToTypeID('null'), ref);
     executeAction(charIDToTypeID('slct'), desc, DialogModes.NO);
     executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO);
+    
 
 }
 /**
@@ -59,16 +60,19 @@ var layersAncestorsMetadata = function (layers) {
         var layer = layers[i];
         if (layer.layers) {
             layersAncestorsMetadata(layer.layers);
-        }
-        //$.writeln(layer.kind);
-        if (layer.kind == "LayerKind.SMARTOBJECT") {
+        }else if (layer.kind == "LayerKind.SMARTOBJECT") {
             $.writeln(layer.name);
             var id = layer.id;
-            openSmartObject(id);//打开智能对象
+            //activeDocument.activeLayer = layer;
+             //executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO);
+            //BGU 未做图层其他属性处理 例如锁定 不可见
+            //openSmartObject(id);//打开智能对象
             layersAncestorsMetadata(app.activeDocument.layers);
             deleteDocumentAncestorsMetadata();//清理数据
             
         }
+        //$.writeln(layer.kind);
+        
     }
 }
 
