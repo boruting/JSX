@@ -62,9 +62,16 @@ var layersAncestorsMetadata = function (layers) {
             layersAncestorsMetadata(layer.layers);
         }else if (layer.kind == "LayerKind.SMARTOBJECT") {
             $.writeln(layer.name);
-            var id = layer.id;
-            //activeDocument.activeLayer = layer;
-             //executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO);
+            //var id = layer.id;
+            
+            activeDocument.activeLayer = layer;
+            if (layer.allLocked === true) {
+
+                layer.allLocked = false;
+                executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO);
+        
+            }
+            executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO);
             //BGU 未做图层其他属性处理 例如锁定 不可见
             //openSmartObject(id);//打开智能对象
             layersAncestorsMetadata(app.activeDocument.layers);

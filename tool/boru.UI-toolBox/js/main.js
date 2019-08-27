@@ -6,7 +6,7 @@ window.onload=function(){
 
     $("#CleanMetadata").click(function () {
             
-        css.evalScript('$.evalFile("' + str + "/jsx/clearPSDMetadate.jsx" + '")');
+        css.evalScript('$.evalFile("' + str + "/jsx/CleanMetadata.jsx" + '")');
     });
     $("#CornerEditor").click(function () {
             
@@ -31,6 +31,10 @@ window.onload=function(){
     $("#openArtLib").click(function () {
                    
         css.evalScript('$.evalFile("' + str + "/jsx/openArtLib.jsx" + '")');
+    });
+    $("#test").click(function () {
+                   
+        css.evalScript('$.evalFile("' + str + "/jsx/clearPSDMetadate.jsx" + '")');
     });
 
 }
