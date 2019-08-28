@@ -1,4 +1,4 @@
-
+﻿
 var main = function () {
 
     whatApp = String(app.name);//String version of the app name

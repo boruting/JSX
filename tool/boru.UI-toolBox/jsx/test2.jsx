@@ -102,15 +102,6 @@ $.writeln(arrAllLocked);
 
 $.writeln("aaa");
 
-//JPG格式文件的智能对象保存有弹窗
-//缺少记录图层原有属性信息
-/**
- * 条件  
- * 条件 1 图层是否 隐藏
- * 条件 2 图层是否 锁定
- * 条件 
- * 
- */
 /**
  * 基础条件 图层是否  智能对象或连接对象 layer.kind == "LayerKind.SMARTOBJECT" 
  * 
@@ -125,40 +116,34 @@ $.writeln("aaa");
  * 
  * 
  */
-if (layer.kind == "LayerKind.SMARTOBJECT") {//如果是智能对象 
-    // 1 锁定的图层 layer.allLocked === true
-    if (layer.allLocked === true) {
-
-    }
-    // 2 隐藏 && 锁定 layer.visible === false && layer.allLocked === true
-    if (layer.visible === false && layer.allLocked === true) {
-
-    }
-    // 3 隐藏的图层 layer.visible === false
-    if (layer.visible === false) {
-
-    }
-    // 4 正常的图层 
-
-}
-if (app.activeDocument.name.substr(-4) == ".jpg") {//jpg 智能对象 保存会有弹窗            条件位置保存当前文档前
-
-    app.activeDocument.close(SaveOptions.SAVECHANGES);//保存关闭当前文档
-    //处理jpg格式保存弹窗问题
-
-}
+//      
 /**
- * JPEG 处理
+ * 智能对象编辑条件
+ * 1 图层是否全锁定
+ * 2 图层移动是否锁定 layer.positionLocked   全部锁定 移动锁定不可选
+ * 
+ * 
+ * 
+ * 先解开全锁  在判断是否有位移锁
  */
-var jpegSave = function (Document) {
-    var saveIn = Document.path;//当前激活文档路径
-    var extensionType = Extension.LOWERCASE;//后缀小写
-    var asCopy = false;//是否已副本的方式
-    var jpegOptions = new JPEGSaveOptions();//embedColorProfile,formatOptions,matte,quality,scans,typename
-    jpegOptions.quality = 12;//图片品质 0-12 
-    jpegOptions.embedColorProfile = true;//false 嵌入颜色配置文件
-    jpegOptions.matte = MatteType.NONE;//BACKGROUND,BLACK,FOREGROUND,NETSCAPE,NONE,SEMIGRAY,WHITE
-    jpegOptions.formatOptions = FormatOptions.STANDARDBASELINE;//基线（”标准”）
+/**
+ * 智能对象全解锁 清理版
+ * @param {*} layer 
+ */
+var smartObjectLocked = function (layer) {
+    if (layer.kind == "LayerKind.SMARTOBJECT") {//如果是智能对象 
+        if (layer.allLocked === true) {
+            //解开全全锁
+            layer.allLocked === false;
 
-    Document.saveAs(saveIn, jpegOptions, asCopy, extensionType);//保存当经激活文档
+            if (layer.positionLocked = true) {
+                //解开移动锁
+                layer.positionLocked = false;
+
+            }
+
+
+        }
+        //打开智能对象
+    }
 }

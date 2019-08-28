@@ -6,7 +6,7 @@ window.onload=function(){
 
     $("#CleanMetadata").click(function () {
             
-        css.evalScript('$.evalFile("' + str + "/jsx/CleanMetadata.jsx" + '")');
+        css.evalScript('$.evalFile("' + str + "/jsx/CleanMetadata_原始的文件.jsx" + '")');
     });
     $("#CornerEditor").click(function () {
             
@@ -34,7 +34,7 @@ window.onload=function(){
     });
     $("#test").click(function () {
                    
-        css.evalScript('$.evalFile("' + str + "/jsx/clearPSDMetadate.jsx" + '")');
+        css.evalScript('$.evalFile("' + str + "/jsx/cleanMetadata.jsx" + '")');
     });
 
 }
