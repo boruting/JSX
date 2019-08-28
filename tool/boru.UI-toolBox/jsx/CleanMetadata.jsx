@@ -1,4 +1,13 @@
-
+/**
+ * 清理psd文档原始数据
+ * 
+ * 减小psd文件  由于原始数据和智能对象的关系导致psd文件过大 
+ * 
+ * @author boru   微信:JackdawTing
+ * 
+ * @date 2019-08-28 
+ * 
+ */
 var main = function () {
 
     whatApp = String(app.name);//String version of the app name
@@ -22,12 +31,13 @@ var main = function () {
         alert("PSD文件 原始数据 MXP 清理完成");
     }
 
-
-
-    //deleteDocumentAncestorsMetadata();
-
-
 }
+
+
+
+
+
+
 /**
  * 清理文档的原始数据 包含智能对象内
  * 
