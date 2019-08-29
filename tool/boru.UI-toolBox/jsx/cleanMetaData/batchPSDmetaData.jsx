@@ -10,7 +10,25 @@
 $.evalFile(File($.fileName).path + "/cleanMetadata.jsx");
 $.global.saveClose = saveClose;
 $.global.cleanMetadataMain = main;
-var folderPath = "D:/test";
+
+
+var pro =function(){
+  var folderPath = prompt("输入地址", "", "1");
+   if(folderPath){
+    $.writeln(folderPath);
+    getPsdFileName(folderPath.replace(/\\/g, '/'));
+    alert("PSD文件 原始数据 MXP 清理完成");
+   
+  }else{
+      
+      return alert ("没有文件地址, 本次操作结束");  
+}
+ 
+ 
+}
+
+
+//var folderPath = "D:/test";
 var getPsdFileName = function (folderPath) {
 
   var folderPath = Folder(folderPath);//文件夹
@@ -48,5 +66,4 @@ var getPsdFileName = function (folderPath) {
 
   }
 }
-getPsdFileName(folderPath);
-alert("PSD文件 原始数据 MXP 清理完成");
+pro();

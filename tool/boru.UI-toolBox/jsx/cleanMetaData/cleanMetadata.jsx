@@ -181,23 +181,23 @@ var getLayersVisibleArr = function (layers, arr) {
     for (var i = 0; i < layers.length; i++) {
 
         var layer = layers[i];
+        //$.writeln(layer.name);
+        if (layer.layers) {//遍历子级
+
+            getLayersVisibleArr(layer.layers, arr);
+
+        }
         if (layer.visible === false) {
             //$.writeln("qian  "+arr+"   名字  "+layer.name);
             arr.push(layer.id);
             //$.writeln("hou  "+arr+"   名字  "+layer.name);
             layer.visible = true;
         }
-        if (layer.layers) {//遍历子级
-
-            getLayersVisibleArr(layer.layers, arr);
-
-        }
+        
 
         //layer.visible = true;
 
     }
-
-
 
 }
 
@@ -210,6 +210,9 @@ var restoreLayersVisible = function (layers, arr) {
 
     for (var i = 0; i < layers.length; i++) {
         var layer = layers[i]
+        if(layer.layers){
+                restoreLayersVisible(layer.layers,arr);
+                }
         for (var j = 0; j < arr.length; j++) {
 
             if (layer.id == arr[j]) {
@@ -219,7 +222,7 @@ var restoreLayersVisible = function (layers, arr) {
                 layer.visible = false;
 
             }
-
+            
         }
 
     }
