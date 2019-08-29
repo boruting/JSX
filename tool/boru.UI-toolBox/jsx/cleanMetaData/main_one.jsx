@@ -1,7 +1,12 @@
 ﻿$.evalFile(File($.fileName).path + "/cleanMetadata.jsx");
 $.global.main = main;
-main();
-alert("PSD文件 原始数据 MXP 清理完成");
+
+if(main() !== false){
+    
+    app.activeDocument.saveAs(app.activeDocument.path);
+    alert("PSD文件 原始数据 MXP 清理完成");
+}
+
 
 
 

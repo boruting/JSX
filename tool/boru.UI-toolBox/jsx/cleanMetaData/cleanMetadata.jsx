@@ -20,7 +20,7 @@ main = function () {
 
             alert("没有打开的文档,请打开一个文件以运行此脚本。\nThere are no open documents. Please open a file to run this script.")
 
-            return;
+            return false;
 
         }
 

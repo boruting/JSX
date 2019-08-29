@@ -34,7 +34,7 @@ window.onload=function(){
     });
     $("#test").click(function () {
                    
-        css.evalScript('$.evalFile("' + str + "/jsx/cleanMeraData/main_one.jsx" + '")');
+        css.evalScript('$.evalFile("' + str + "/jsx/cleanMetaData/main_one.jsx" + '")');
     });
 
 }
