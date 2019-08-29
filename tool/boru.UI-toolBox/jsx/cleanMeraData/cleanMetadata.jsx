@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 清理psd文档原始数据
  * 
  * 减小psd文件  由于原始数据和智能对象的关系导致psd文件过大 
@@ -6,9 +6,9 @@
  * @author boru   微信:JackdawTing
  * 
  * @date 2019-08-28 
- * 
+ * @date 2019-08-29  修改选中图层的方式   当前缺少获取锁定图层功能
  */
-var main = function () {
+main = function () {
 
     whatApp = String(app.name);//String version of the app name
 
@@ -28,7 +28,7 @@ var main = function () {
         cleanMetadata();//先清理下当前的psd 文件数据
         app.activeDocument.saveAs(app.activeDocument.path);//保存一次
         cleanDocumentMetadata();
-        alert("PSD文件 原始数据 MXP 清理完成");
+        //alert("PSD文件 原始数据 MXP 清理完成");
     }
 
 }
@@ -49,7 +49,8 @@ var cleanDocumentMetadata = function () {
     var arr = [];//保存隐藏图层的 数组
 
     cleanMetadata();
-    getLayersVisibleArr(layers, arr);
+    getLayersVisibleArr(layers, arr);//获取所有隐藏图层
+    //获取所有锁定图层  当前缺少的功能 
 
     for (var i = 0; i < layers.length; i++) {
         var layer = layers[i];
@@ -154,23 +155,13 @@ var jpegSave = function (document) {
 
 }
 /**
- * 动作描述类型编辑智能对象
+ * 编辑智能对象
  * 
- * 动作描述可以保留图层原来的设置(例如是否是隐藏图层)
  * @param {*} layer 图层 
  */
 var editSmartObject = function (layer) {
-    var name = layer.name;//图层名字
-    var id = layer.id;//图层ID
-    var desc = new ActionDescriptor();
-    var ref = new ActionReference();
-    var list = new ActionList();
-    ref.putName(charIDToTypeID('Lyr '), name);
-    desc.putReference(charIDToTypeID('null'), ref);
-    desc.putBoolean(charIDToTypeID("MkVs"), false);
-    list.putInteger(id);
-    desc.putList(charIDToTypeID("LyrI"), list);
-    executeAction(charIDToTypeID('slct'), desc, DialogModes.NO);//选中图层
+    
+    activeDocument.activeLayer = layer;//选中当前激活文档的当前图层
 
     executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO);//编辑智能对象
 
@@ -251,7 +242,7 @@ var cleanMetadata = function () {
 }
 
 
-main();
+//main();
 
 
 
@@ -284,4 +275,32 @@ var smartObject = function (layer) {
         // 4 正常的图层 
 
     }
+}
+/**
+ * 动作描述类型编辑智能对象
+ * 
+ * 动作描述可以保留图层原来的设置(例如是否是隐藏图层)
+ * @param {*} layer 图层 
+ */
+var editSmartObject__________ = function (layer) {
+    var name = layer.name;//图层名字
+    var id = layer.id;//图层ID
+    var desc = new ActionDescriptor();
+    var ref = new ActionReference();
+    var list = new ActionList();
+    ref.putIdentifier(charIDToTypeID('Lyr '), id);//重名选中BUG
+    desc.putReference(charIDToTypeID('null'), ref);
+    desc.putBoolean(charIDToTypeID("MkVs"), false);
+    list.putInteger(id);
+    desc.putList(charIDToTypeID("LyrI"), list);
+    executeAction(charIDToTypeID('slct'), desc, DialogModes.NO);//选中图层
+
+   
+
+    executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO);//编辑智能对象
+
+    cleanDocumentMetadata();
+    //cleanMetadata();
+
+    saveClose(app.activeDocument);
 }
