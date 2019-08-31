@@ -60,7 +60,7 @@ function parseFile(pat, assetsName, imgTypeVal, nameTypeVal) {
                             var tFileName = line[0];                      //翻译的资源名次
                             var translate = line[2];                        //翻译的内容
                             var text = translate || line[1];               //要输出的文本
-                            
+
                             var ignore = line[3];                           //检测第4列是否内用是否等于"不导出"						
                             if (ignore != 1) {
                                 //alert("这里是ignore");
@@ -84,21 +84,21 @@ function parseFile(pat, assetsName, imgTypeVal, nameTypeVal) {
                                 //判断表格第一列文字中是否存在"/" 如果有创建子级文件夹
                                 if (tFileName.indexOf('/') != -1) {
                                     // alert("这里是tFileName.indexOf)  "+tFileName.indexOf);	
-                                    
+
                                     var nFileName = tFileName.split("/");
-                                   
+
                                     //处理是否还有子级 文件夹需要创建
-                                    if(nFileName.length<3){
+                                    if (nFileName.length < 3) {
                                         var fileName = nFileName[0];
                                         var imgName = nFileName[1];
                                         //alert(nFileName);
                                         //alert("小于 "+fileName);
-                                    }else{
-                                        var fileName = nFileName.slice(0,nFileName.length-1);//获取表格第一列内容中的/前的文字                                                           
-                                        var fileName = fileName.toString().replace(/,/g,"/");//把 , 转换成 /                                        
-                                        var imgName = nFileName[nFileName.length-1];//取数组最后的文字(/最后的文字)
+                                    } else {
+                                        var fileName = nFileName.slice(0, nFileName.length - 1);//获取表格第一列内容中的/前的文字                                                           
+                                        var fileName = fileName.toString().replace(/,/g, "/");//把 , 转换成 /                                        
+                                        var imgName = nFileName[nFileName.length - 1];//取数组最后的文字(/最后的文字)
                                         //alert("imgName =  "+imgName);                                         
-                                    }                                                                      
+                                    }
                                     //获取表格第一列内容中的/前的文字
                                     //var imgSerial = "_" + nFileName[1].split("_")[1];
                                     //var imgName = nFileName[1].split("_")[0];
@@ -107,21 +107,21 @@ function parseFile(pat, assetsName, imgTypeVal, nameTypeVal) {
                                     if (nameTypeVal == "nameType2") {//图片名字类型 序号_类型名 常规类型
                                         //alertx(imgName + " " + PSD_suf)
                                         var imgName = imgName + PSD_suf + ".png";
-                                       
+
                                     } else if (nameTypeVal == "nameType1") {//图片名字类型 类型名_序号
                                         var PSD_suf = nameSplit[1];
                                         //alert(imgName + " " + PSD_suf)
                                         var imgName = PSD_suf + imgName + ".png";
-                                    } else if(nameTypeVal == "nameType0") {
-                                        var folder_num = new Folder(parentPath + "/" + fileName + "/" +nameSplit[1]);
+                                    } else if (nameTypeVal == "nameType0") {
+                                        var folder_num = new Folder(parentPath + "/" + fileName + "/" + nameSplit[1]);
 
                                         if (!folder_num.exists) {
                                             folder_num.create();
                                         }
-                                        var imgName = nameSplit[1] + "/" + imgName +  ".png";
+                                        var imgName = nameSplit[1] + "/" + imgName + ".png";
                                         //alert("是个啥:    " + imgName);
 
-                                    }else{
+                                    } else {
                                         alert("错误: " + nameTypeVal);
                                     }
 
@@ -164,7 +164,7 @@ function parseFile(pat, assetsName, imgTypeVal, nameTypeVal) {
 
 
                             }
-
+                            //循环内
                         }
                         textItem.contents = oldText;
                     }

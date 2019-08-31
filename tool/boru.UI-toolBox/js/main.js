@@ -4,9 +4,13 @@ window.onload=function(){
     var str = csInterface.getSystemPath(SystemPath.EXTENSION);
     
 
-    $("#CleanMetadata").click(function () {
+    $("#main_one").click(function () {
             
-        css.evalScript('$.evalFile("' + str + "/jsx/CleanMetadata_原始的文件.jsx" + '")');
+        css.evalScript('$.evalFile("' + str + "/jsx/cleanMetaData/main_one.jsx" + '")');
+    });
+    $("#batchPSDmetaData").click(function () {
+            
+        css.evalScript('$.evalFile("' + str + "/jsx/cleanMetaData/batchPSDmetaData.jsx" + '")');
     });
     $("#CornerEditor").click(function () {
             
@@ -32,9 +36,9 @@ window.onload=function(){
                    
         css.evalScript('$.evalFile("' + str + "/jsx/openArtLib.jsx" + '")');
     });
-    $("#test").click(function () {
+    $("#test").mouseup(function () {
                    
-        css.evalScript('$.evalFile("' + str + "/jsx/cleanMetaData/main_one.jsx" + '")');
+        css.evalScript('$.evalFile("' + str + "/jsx/test.jsx" + '")');
     });
 
 }
