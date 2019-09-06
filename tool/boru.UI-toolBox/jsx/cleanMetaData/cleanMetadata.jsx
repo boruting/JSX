@@ -47,6 +47,7 @@ var cleanDocumentMetadata = function () {
     var aDoc = app.activeDocument;
     var layers = aDoc.layers;
     var arr = [];//保存隐藏图层的 数组
+    //数组添加类型
 
     cleanMetadata();
     getLayersVisibleArr(layers, arr);//获取所有隐藏图层
@@ -247,6 +248,70 @@ var cleanMetadata = function () {
 
 //main();
 
+
+
+
+
+
+/**
+ * 获得当前文档的隐藏图层
+ * @param {*} layers 文档图层数组
+ * @param {*} arr  存放隐藏图层的数组
+ */
+
+
+var getLayersInfo = function (layers,visibleArr,allLockedArr,posLockedArr) {
+
+    for (var i = 0; i < layers.length; i++) {
+
+        var layer = layers[i];
+        //$.writeln(layer.name);
+        if (layer.layers) {//遍历子级
+
+            getLayersInfo(layer.layers,visibleArr,allLockedArr,posLockedArr);
+
+        }
+        if (layer.visible === false) {
+            //$.writeln("qian  "+arr+"   名字  "+layer.name);
+            visibleArr.push(layer.id);
+            //$.writeln("hou  "+arr+"   名字  "+layer.name);
+            layer.visible = true;
+        }
+        if (layer.allLocked === true) {
+            //$.writeln("qian  "+arr+"   名字  "+layer.name);
+            allLockedArr.push(layer.id);
+            //$.writeln("hou  "+arr+"   名字  "+layer.name);
+            layer.allLocked = false;
+            if (layer.positionLocked === true) {
+                //解开移动锁
+                posLockedArr.push(layer.id);
+                layer.positionLocked = false;
+
+            }
+        }
+        if (layer.positionLocked === true) {
+                //解开移动锁
+                posLockedArr.push(layer.id);
+                layer.positionLocked = false;
+
+            }
+
+
+        //layer.visible = true;
+
+    }
+
+}
+var visibleArr = [];
+var allLockedArr = [];
+var posLockedArr=[];
+getLayersInfo(app.activeDocument.layers,visibleArr,allLockedArr,posLockedArr);
+//反向处理 
+//先处理移动锁定
+//全部锁定
+//隐藏
+$.writeln(allLockedArr+"   "+posLockedArr);
+$.writeln("aaas");
 
 
 
