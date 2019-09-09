@@ -275,3 +275,120 @@ var smartObject = function (layer) {
 
     }
 }
+
+
+
+
+
+
+
+
+
+//====================================================未使用===================================
+/**
+ * 未使用 保留以后使用
+ */
+var smartObject = function (layer) {
+    if (layer.kind == "LayerKind.SMARTOBJECT") {//如果是智能对象 
+        // 1 锁定的图层 layer.allLocked === true
+        if (layer.allLocked === true && layer.visible === true) {
+            $.writeln("锁定图层: " + layer.name);
+        }
+        // 2 隐藏 && 锁定 layer.visible === false && layer.allLocked === true
+        if (layer.visible === false && layer.allLocked === true) {
+            $.writeln("隐藏 && 锁定: " + layer.name);
+
+        }
+        // 3 隐藏的图层 layer.visible === false
+        if (layer.visible === false && layer.allLocked === false) {
+            $.writeln("隐藏的图层: " + layer.name);
+
+        }
+        // 4 正常的图层 
+
+    }
+}
+/**
+ * 动作描述类型编辑智能对象
+ * 
+ * 动作描述可以保留图层原来的设置(例如是否是隐藏图层)
+ * @param {*} layer 图层 
+ */
+var editSmartObject__________ = function (layer) {
+    var name = layer.name;//图层名字
+    var id = layer.id;//图层ID
+    var desc = new ActionDescriptor();
+    var ref = new ActionReference();
+    var list = new ActionList();
+    ref.putIdentifier(charIDToTypeID('Lyr '), id);//重名选中BUG
+    desc.putReference(charIDToTypeID('null'), ref);
+    desc.putBoolean(charIDToTypeID("MkVs"), false);
+    list.putInteger(id);
+    desc.putList(charIDToTypeID("LyrI"), list);
+    executeAction(charIDToTypeID('slct'), desc, DialogModes.NO);//选中图层
+
+
+
+    executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO);//编辑智能对象
+
+    cleanDocumentMetadata();
+    //cleanMetadata();
+
+    saveClose(app.activeDocument);
+}
+
+/**
+ * 还原文档最初的隐藏图层
+ * @param {*} layers 文档图层数组
+ * @param {*} arr    存放隐藏图层的数组
+ */
+var restoreLayersVisible = function (layers, arr) {
+
+    for (var i = 0; i < layers.length; i++) {
+        var layer = layers[i]
+        if (layer.layers) {
+            restoreLayersVisible(layer.layers, arr);
+        }
+        for (var j = 0; j < arr.length; j++) {
+
+            if (layer.id == arr[j]) {
+
+                $.writeln("还原的图层是 " + layer.name);
+
+                layer.visible = false;
+
+            }
+
+        }
+
+    }
+}
+/**
+ * 获得当前文档的隐藏图层
+ * @param {*} layers 文档图层数组
+ * @param {*} arr  存放隐藏图层的数组
+ */
+var getLayersVisibleArr = function (layers, arr) {
+
+    for (var i = 0; i < layers.length; i++) {
+
+        var layer = layers[i];
+        //$.writeln(layer.name);
+        if (layer.layers) {//遍历子级
+
+            getLayersVisibleArr(layer.layers, arr);
+
+        }
+        if (layer.visible === false) {
+            //$.writeln("qian  "+arr+"   名字  "+layer.name);
+            arr.push(layer.id);
+            //$.writeln("hou  "+arr+"   名字  "+layer.name);
+            layer.visible = true;
+        }
+
+
+        //layer.visible = true;
+
+    }
+
+}

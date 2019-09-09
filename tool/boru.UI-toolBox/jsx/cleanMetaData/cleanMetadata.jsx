@@ -1,12 +1,12 @@
 ﻿/**
- * 清理psd文档原始数据
- * 
- * 减小psd文件  由于原始数据和智能对象的关系导致psd文件过大 
- * 
- * @author boru   微信:JackdawTing
- * 
+ * @author boru
+ * @name 清理psd文档原始数据
+ * @description 减小psd文件  由于原始数据和智能对象的关系导致psd文件过大
+ * @weixin JackdawTing
  * @date 2019-08-28 
  * @date 2019-08-29  修改选中图层的方式   当前缺少获取锁定图层功能
+ * @date 2019-09-09  添加获取锁定类型 和 先判断打开的文档是不是jpg格式  缺少判断背景层
+ * 
  */
 main = function () {
 
@@ -26,17 +26,12 @@ main = function () {
 
         //alert("PSD文件 原始数据 MXP 清理完成");
         cleanMetadata();//先清理下当前的psd 文件数据
-        app.activeDocument.saveAs(app.activeDocument.path);//保存一次
+        //app.activeDocument.saveAs(app.activeDocument.path);//保存一次
         cleanDocumentMetadata();
         //alert("PSD文件 原始数据 MXP 清理完成");
     }
 
 }
-
-
-
-
-
 
 /**
  * 清理文档的原始数据 包含智能对象内
@@ -46,11 +41,19 @@ var cleanDocumentMetadata = function () {
 
     var aDoc = app.activeDocument;
     var layers = aDoc.layers;
-    var arr = [];//保存隐藏图层的 数组
-    //数组添加类型
+    //var arr = [];//保存隐藏图层的 数组
+    var visibleArr = [];//图层隐藏属性数组
+    var posLockedArr = [];//图层移动锁定属性数组
+    var allLockedArr = [];//图层全锁定属性数组
+
 
     cleanMetadata();
-    getLayersVisibleArr(layers, arr);//获取所有隐藏图层
+    //记录图层信息
+    layersInfo.record(app.activeDocument.layers, visibleArr, allLockedArr, posLockedArr);
+
+    $.writeln("隐藏的图层ID: [" + layersInfo.visibleArr + "] 全锁定的图层ID: [" + layersInfo.allLockedArr + "] 移动锁定的图层ID: [" + layersInfo.posLockedArr + "]");
+
+    //getLayersVisibleArr(layers, arr);//获取所有隐藏图层
     //获取所有锁定图层  当前缺少的功能 
 
     for (var i = 0; i < layers.length; i++) {
@@ -59,14 +62,24 @@ var cleanDocumentMetadata = function () {
             layerSetFor(layer);
         }
         if (layer.kind == "LayerKind.SMARTOBJECT") {//如果是智能对象 
-            smartObjectLocked(layer); //解锁图层 包含图层移动解锁
+            //smartObjectLocked(layer); //解锁图层 包含图层移动解锁
             editSmartObject(layer);//编辑智能对象
 
 
         }
 
     }
-    restoreLayersVisible(layers, arr);//最后执行
+    //还原
+    $.writeln(aDoc.name)
+    if(posLockedArr||allLockedArr||visibleArr){
+        layersInfo.restore(layers,posLockedArr,allLockedArr,visibleArr);
+    }
+    
+    $.writeln("111")
+    //restoreLayersVisible(layers, arr);//最后执行
+
+
+
 }
 
 /**
@@ -86,42 +99,11 @@ var layerSetFor = function (layer) {
 
         }
         if (layer.kind == "LayerKind.SMARTOBJECT") {//如果是智能对象 
-            smartObjectLocked(layer); //解锁图层 包含图层移动解锁
+            //smartObjectLocked(layer); //解锁图层 包含图层移动解锁
             editSmartObject(layer);//编辑智能对象
         }
     }
 }
-
-
-/**
- * 智能对象全解锁 清理版
- * 
- * @param {*} layer 
- */
-var smartObjectLocked = function (layer) {
-
-    if (layer.allLocked === true) { //锁定判断
-        //解开全全锁
-        layer.allLocked = false;
-
-        if (layer.positionLocked === true) {
-            //解开移动锁
-            layer.positionLocked = false;
-
-        }
-
-        //打开智能对象
-    }
-    if (layer.positionLocked === true) {
-        //解开移动锁
-        layer.positionLocked = false;
-
-    }
-
-}
-
-
-
 /**
  * 保存并且关闭文档 
  * 
@@ -161,73 +143,23 @@ var jpegSave = function (document) {
  * @param {*} layer 图层 
  */
 var editSmartObject = function (layer) {
-    
+
     activeDocument.activeLayer = layer;//选中当前激活文档的当前图层
 
     executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO);//编辑智能对象
-
+    if (app.activeDocument.name.substr(-4) == ".jpg") {
+        cleanMetadata();
+        saveClose(app.activeDocument);
+    } else {
     cleanDocumentMetadata();
     //cleanMetadata();
 
     saveClose(app.activeDocument);
-}
-
-/**
- * 获得当前文档的隐藏图层
- * @param {*} layers 文档图层数组
- * @param {*} arr  存放隐藏图层的数组
- */
-var getLayersVisibleArr = function (layers, arr) {
-
-    for (var i = 0; i < layers.length; i++) {
-
-        var layer = layers[i];
-        //$.writeln(layer.name);
-        if (layer.layers) {//遍历子级
-
-            getLayersVisibleArr(layer.layers, arr);
-
-        }
-        if (layer.visible === false) {
-            //$.writeln("qian  "+arr+"   名字  "+layer.name);
-            arr.push(layer.id);
-            //$.writeln("hou  "+arr+"   名字  "+layer.name);
-            layer.visible = true;
-        }
-        
-
-        //layer.visible = true;
-
-    }
-
-}
-
-/**
- * 还原文档最初的隐藏图层
- * @param {*} layers 文档图层数组
- * @param {*} arr    存放隐藏图层的数组
- */
-var restoreLayersVisible = function (layers, arr) {
-
-    for (var i = 0; i < layers.length; i++) {
-        var layer = layers[i]
-        if(layer.layers){
-                restoreLayersVisible(layer.layers,arr);
-                }
-        for (var j = 0; j < arr.length; j++) {
-
-            if (layer.id == arr[j]) {
-
-                $.writeln("还原的图层是 " + layer.name);
-
-                layer.visible = false;
-
-            }
-            
-        }
-
     }
 }
+
+
+
 /**
  * 清理数据
  */
@@ -244,23 +176,18 @@ var cleanMetadata = function () {
     app.activeDocument.xmpMetadata.rawData = xmp.serialize();
 
 }
-
-
-//main();
-
-
-
-
-
+/**
+ * 图层信息
+ */
+var layersInfo = {}
 
 /**
- * 获得当前文档的隐藏图层
- * @param {*} layers 文档图层数组
- * @param {*} arr  存放隐藏图层的数组
+ * 记录文档中打开时 图层的信息
+ * 1.图层是否是隐藏状态
+ * 2.图层是否锁定了移动属性
+ * 3.图层是否全锁定了
  */
-
-
-var getLayersInfo = function (layers,visibleArr,allLockedArr,posLockedArr) {
+layersInfo.record = function (layers, visibleArr, allLockedArr, posLockedArr) {
 
     for (var i = 0; i < layers.length; i++) {
 
@@ -268,7 +195,7 @@ var getLayersInfo = function (layers,visibleArr,allLockedArr,posLockedArr) {
         //$.writeln(layer.name);
         if (layer.layers) {//遍历子级
 
-            getLayersInfo(layer.layers,visibleArr,allLockedArr,posLockedArr);
+            layersInfo.record(layer.layers, visibleArr, allLockedArr, posLockedArr);
 
         }
         if (layer.visible === false) {
@@ -290,85 +217,74 @@ var getLayersInfo = function (layers,visibleArr,allLockedArr,posLockedArr) {
             }
         }
         if (layer.positionLocked === true) {
-                //解开移动锁
-                posLockedArr.push(layer.id);
-                layer.positionLocked = false;
+            //解开移动锁
+            posLockedArr.push(layer.id);
+            layer.positionLocked = false;
 
-            }
+        }
 
 
         //layer.visible = true;
 
     }
 
+
 }
-var visibleArr = [];
-var allLockedArr = [];
-var posLockedArr=[];
-getLayersInfo(app.activeDocument.layers,visibleArr,allLockedArr,posLockedArr);
-//反向处理 
-//先处理移动锁定
-//全部锁定
-//隐藏
-$.writeln(allLockedArr+"   "+posLockedArr);
-$.writeln("aaas");
-
-
-
-
-
-
-
-
-//====================================================未使用===================================
 /**
- * 未使用 保留以后使用
+ * 还原文档中图层属性到 文档打开是后
+ * 1.还原图层 移动锁定
+ * 2.还原图层 全锁定
+ * 3.还原图层 隐藏
+ * 还原顺序需要 先还原 移动锁定 在还原 全锁定 最后还原 隐藏 
  */
-var smartObject = function (layer) {
-    if (layer.kind == "LayerKind.SMARTOBJECT") {//如果是智能对象 
-        // 1 锁定的图层 layer.allLocked === true
-        if (layer.allLocked === true && layer.visible === true) {
-            $.writeln("锁定图层: " + layer.name);
+layersInfo.restore = function (layers,posLockedArr,allLockedArr,visibleArr) {
+    for (var i = 0; i < layers.length; i++) {
+        var layer = layers[i];
+        if (layer.layers) {
+            layersInfo.restore(layer.layers);
         }
-        // 2 隐藏 && 锁定 layer.visible === false && layer.allLocked === true
-        if (layer.visible === false && layer.allLocked === true) {
-            $.writeln("隐藏 && 锁定: " + layer.name);
-
+        if(posLockedArr){
+            layersInfo.restoreLayer(layer, posLockedArr, layersInfo.layerPositionLocked);
         }
-        // 3 隐藏的图层 layer.visible === false
-        if (layer.visible === false && layer.allLocked === false) {
-            $.writeln("隐藏的图层: " + layer.name);
-
+        if(allLockedArr){
+            layersInfo.restoreLayer(layer, allLockedArr, layersInfo.layerAllLocked);
         }
-        // 4 正常的图层 
+        if(visibleArr){
+            layersInfo.restoreLayer(layer, visibleArr, layersInfo.layerVisible);
+        }
+        
+    }
 
+}
+/**
+ * 通过过类型还原当前图层
+ * 
+ */
+layersInfo.restoreLayer = function (layer, arr, type) {
+    for (var i = 0; i < arr.length; i++) {
+        if (layer.id == arr[i]) {
+            type(layer);
+            $.writeln("还原== " + layer.name + "==图层" + "===图层ID:" + layer.id);
+        }
     }
 }
 /**
- * 动作描述类型编辑智能对象
- * 
- * 动作描述可以保留图层原来的设置(例如是否是隐藏图层)
- * @param {*} layer 图层 
+ * 返回 当前图层修改为隐藏状态 
  */
-var editSmartObject__________ = function (layer) {
-    var name = layer.name;//图层名字
-    var id = layer.id;//图层ID
-    var desc = new ActionDescriptor();
-    var ref = new ActionReference();
-    var list = new ActionList();
-    ref.putIdentifier(charIDToTypeID('Lyr '), id);//重名选中BUG
-    desc.putReference(charIDToTypeID('null'), ref);
-    desc.putBoolean(charIDToTypeID("MkVs"), false);
-    list.putInteger(id);
-    desc.putList(charIDToTypeID("LyrI"), list);
-    executeAction(charIDToTypeID('slct'), desc, DialogModes.NO);//选中图层
-
-   
-
-    executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO);//编辑智能对象
-
-    cleanDocumentMetadata();
-    //cleanMetadata();
-
-    saveClose(app.activeDocument);
+layersInfo.layerVisible = function (layer) {
+    return layer.visible = false;
 }
+/**
+ * 返回 当前图层修改为移动锁定状态
+ */
+layersInfo.layerPositionLocked = function (layer) {
+    return layer.positionLocked = true;
+}
+/**
+ * 返回 当前图层修改为全部锁定状态
+ */
+layersInfo.layerAllLocked = function (layer) {
+    return layer.allLocked = true;
+}
+
+//main();
