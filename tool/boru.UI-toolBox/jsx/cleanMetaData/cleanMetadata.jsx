@@ -6,6 +6,7 @@
  * @date 2019-08-28 
  * @date 2019-08-29  修改选中图层的方式   当前缺少获取锁定图层功能
  * @date 2019-09-09  添加获取锁定类型 和 先判断打开的文档是不是jpg格式  缺少判断背景层
+ * @adte 2019-09-11  修改背景层解锁问题(临时忽略处理) layersInfo.record {layer.positionLocked === true}
  * 
  */
 main = function () {
@@ -71,10 +72,10 @@ var cleanDocumentMetadata = function () {
     }
     //还原
     $.writeln(aDoc.name)
-    if(posLockedArr||allLockedArr||visibleArr){
-        layersInfo.restore(layers,posLockedArr,allLockedArr,visibleArr);
+    if (posLockedArr || allLockedArr || visibleArr) {
+        layersInfo.restore(layers, posLockedArr, allLockedArr, visibleArr);
     }
-    
+
     $.writeln("111")
     //restoreLayersVisible(layers, arr);//最后执行
 
@@ -151,10 +152,10 @@ var editSmartObject = function (layer) {
         cleanMetadata();
         saveClose(app.activeDocument);
     } else {
-    cleanDocumentMetadata();
-    //cleanMetadata();
+        cleanDocumentMetadata();
+        //cleanMetadata();
 
-    saveClose(app.activeDocument);
+        saveClose(app.activeDocument);
     }
 }
 
@@ -211,15 +212,22 @@ layersInfo.record = function (layers, visibleArr, allLockedArr, posLockedArr) {
             layer.allLocked = false;
             if (layer.positionLocked === true) {
                 //解开移动锁
-                posLockedArr.push(layer.id);
-                layer.positionLocked = false;
+                if (layer.id != 1) {//处理忽略背景层  背景从的 id:1 无论存在与否 id:1都是倍占用的
+                    posLockedArr.push(layer.id);
+                    layer.positionLocked = false;
+
+                }
 
             }
         }
         if (layer.positionLocked === true) {
             //解开移动锁
-            posLockedArr.push(layer.id);
-            layer.positionLocked = false;
+            if (layer.id != 1) {//处理忽略背景层  背景从的 id:1 无论存在与否 id:1都是倍占用的
+                posLockedArr.push(layer.id);
+                layer.positionLocked = false;
+
+            }
+
 
         }
 
@@ -237,22 +245,22 @@ layersInfo.record = function (layers, visibleArr, allLockedArr, posLockedArr) {
  * 3.还原图层 隐藏
  * 还原顺序需要 先还原 移动锁定 在还原 全锁定 最后还原 隐藏 
  */
-layersInfo.restore = function (layers,posLockedArr,allLockedArr,visibleArr) {
+layersInfo.restore = function (layers, posLockedArr, allLockedArr, visibleArr) {
     for (var i = 0; i < layers.length; i++) {
         var layer = layers[i];
         if (layer.layers) {
             layersInfo.restore(layer.layers);
         }
-        if(posLockedArr){
+        if (posLockedArr) {
             layersInfo.restoreLayer(layer, posLockedArr, layersInfo.layerPositionLocked);
         }
-        if(allLockedArr){
+        if (allLockedArr) {
             layersInfo.restoreLayer(layer, allLockedArr, layersInfo.layerAllLocked);
         }
-        if(visibleArr){
+        if (visibleArr) {
             layersInfo.restoreLayer(layer, visibleArr, layersInfo.layerVisible);
         }
-        
+
     }
 
 }

@@ -13,7 +13,7 @@ $.global.cleanMetadataMain = main;
 
 
 var pro =function(){
-  var folderPath = prompt("输入地址", "", "1");
+  var folderPath = prompt("输入地址", "", "批处理地址");
    if(folderPath){
     $.writeln(folderPath);
     getPsdFileName(folderPath.replace(/\\/g, '/'));
