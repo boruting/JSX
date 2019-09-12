@@ -1,5 +1,4 @@
-﻿#include "helper.js"
-
+﻿$.evalFile(File($.fileName).path + "/helper.js");
 function datenum(v, date1904) {
     if (date1904) v += 1462;
     var epoch = Date.parse(v);
