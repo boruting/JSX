@@ -7,6 +7,7 @@
  * @date 2019-08-29  修改选中图层的方式   当前缺少获取锁定图层功能
  * @date 2019-09-09  添加获取锁定类型 和 先判断打开的文档是不是jpg格式  缺少判断背景层
  * @date 2019-09-11  修改背景层解锁问题(临时忽略处理) layersInfo.record {layer.positionLocked === true}
+ * @date 2019-09-18  BGU 向下嵌入类型图层隐藏倍取消 和 其他图层隐藏效果被取消 
  * 
  */
 main = function () {
@@ -280,6 +281,7 @@ layersInfo.restoreLayer = function (layer, arr, type) {
  * 返回 当前图层修改为隐藏状态 
  */
 layersInfo.layerVisible = function (layer) {
+    $.writeln("aaaaaaa");
     return layer.visible = false;
 }
 /**
