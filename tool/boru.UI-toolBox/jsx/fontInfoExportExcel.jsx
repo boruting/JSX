@@ -1,4 +1,6 @@
-﻿$.evalFile(File($.fileName).path + "/helper.js");
+﻿var file = File($.fileName);
+var p =decodeURI(file.parent.parent);
+$.evalFile( p+ "/js/helper.js");
 function datenum(v, date1904) {
     if (date1904) v += 1462;
     var epoch = Date.parse(v);

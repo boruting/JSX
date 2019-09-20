@@ -7,8 +7,9 @@
  * @date 2019-08-29  修改选中图层的方式   当前缺少获取锁定图层功能
  * @date 2019-09-09  添加获取锁定类型 和 先判断打开的文档是不是jpg格式  缺少判断背景层
  * @date 2019-09-11  修改背景层解锁问题(临时忽略处理) layersInfo.record {layer.positionLocked === true}
- * @date 2019-09-18  BGU 向下嵌入类型图层隐藏倍取消 和 其他图层隐藏效果被取消 
- * 
+ * @date 2019-09-20  BGU  layersInfo.restore 方法遍历子级传参遗漏
+ *                   添加psd保存类型(另存为) 
+ *                   AI文件 嵌入的智能对象忽略处理           
  */
 main = function () {
 
@@ -53,7 +54,7 @@ var cleanDocumentMetadata = function () {
     //记录图层信息
     layersInfo.record(app.activeDocument.layers, visibleArr, allLockedArr, posLockedArr);
 
-    $.writeln("隐藏的图层ID: [" + layersInfo.visibleArr + "] 全锁定的图层ID: [" + layersInfo.allLockedArr + "] 移动锁定的图层ID: [" + layersInfo.posLockedArr + "]");
+    $.writeln("隐藏的图层ID: [" + visibleArr + "] 全锁定的图层ID: [" + allLockedArr + "] 移动锁定的图层ID: [" + posLockedArr + "]");
 
     //getLayersVisibleArr(layers, arr);//获取所有隐藏图层
     //获取所有锁定图层  当前缺少的功能 
@@ -77,7 +78,7 @@ var cleanDocumentMetadata = function () {
         layersInfo.restore(layers, posLockedArr, allLockedArr, visibleArr);
     }
 
-    $.writeln("111")
+    //$.writeln("111")
     //restoreLayersVisible(layers, arr);//最后执行
 
 
@@ -102,6 +103,7 @@ var layerSetFor = function (layer) {
         }
         if (layer.kind == "LayerKind.SMARTOBJECT") {//如果是智能对象 
             //smartObjectLocked(layer); //解锁图层 包含图层移动解锁
+
             editSmartObject(layer);//编辑智能对象
         }
     }
@@ -115,11 +117,28 @@ var saveClose = function (document) {
     if (document.name.substr(-4) == ".jpg") {//jpg 智能对象 保存会有弹窗            条件位置保存当前文档前
         $.writeln("======保存jpeg类型文件=====");
         jpegSave(document);//jpg 格式保存关闭
-
+        return;
+    } if (document.name.substr(-4) == ".psd") {
+        $.writeln("======保存PSD类型文件=====");
+        psdSave(document);
+        return;
     } else {
         $.writeln("======保存其它类型文件=====");
         document.close(SaveOptions.SAVECHANGES);//保存关闭当前文档
     }
+}
+/**
+ * PSD  处理
+ * @param {*} document 
+ */
+var psdSave = function (document) {
+    var fileOut = new File(document.path + "/" + "newCopy_" + document.name);//文件保存的路径和名字(在源文件名前加了newCopy_)
+    var psd = PhotoshopSaveOptions;//psd格式保存
+    var asCopy = true;//用来指定以副本的方式保存。
+    var extensionType = Extension.LOWERCASE;//后缀小写
+    document.saveAs(fileOut, psd, asCopy, extensionType);//另存为一个文档
+    $.writeln("文件保存到:  "+decodeURI(fileOut));
+    document.close(SaveOptions.DONOTSAVECHANGES);//关闭原始文档(不保存)
 }
 /**
  * JPEG 处理
@@ -140,6 +159,23 @@ var jpegSave = function (document) {
 
 }
 /**
+ * 返回一个智能对象的引用类型
+ */
+var smartObjectType = function () {
+    var r = new ActionReference();
+    var d = new ActionDescriptor();
+
+    r.putEnumerated(stringIDToTypeID("layer"), stringIDToTypeID("ordinal"), stringIDToTypeID("targetEnum"));
+    d.putReference(charIDToTypeID('null'), r);
+    var options = executeAction(charIDToTypeID("getd"), d, DialogModes.NO);
+    options = options.getObjectValue(stringIDToTypeID("smartObject"));
+    var SmartName = options.getString(stringIDToTypeID("fileReference"));
+    $.writeln(SmartName);
+    return SmartName;
+
+
+}
+/**
  * 编辑智能对象
  * 
  * @param {*} layer 图层 
@@ -147,11 +183,19 @@ var jpegSave = function (document) {
 var editSmartObject = function (layer) {
 
     activeDocument.activeLayer = layer;//选中当前激活文档的当前图层
+    var smartName = smartObjectType();
+    if (smartName.substr(-2) == "ai") {
+        $.writeln("这条图层是个AI智能对象 " + smartName);
+        return;
+    }
+
 
     executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO);//编辑智能对象
+
     if (app.activeDocument.name.substr(-4) == ".jpg") {
         cleanMetadata();
         saveClose(app.activeDocument);
+        return;
     } else {
         cleanDocumentMetadata();
         //cleanMetadata();
@@ -250,7 +294,7 @@ layersInfo.restore = function (layers, posLockedArr, allLockedArr, visibleArr) {
     for (var i = 0; i < layers.length; i++) {
         var layer = layers[i];
         if (layer.layers) {
-            layersInfo.restore(layer.layers);
+            layersInfo.restore(layer.layers, posLockedArr, allLockedArr, visibleArr);
         }
         if (posLockedArr) {
             layersInfo.restoreLayer(layer, posLockedArr, layersInfo.layerPositionLocked);
@@ -281,7 +325,7 @@ layersInfo.restoreLayer = function (layer, arr, type) {
  * 返回 当前图层修改为隐藏状态 
  */
 layersInfo.layerVisible = function (layer) {
-    $.writeln("aaaaaaa");
+    //$.writeln("aaaaaaa");
     return layer.visible = false;
 }
 /**
