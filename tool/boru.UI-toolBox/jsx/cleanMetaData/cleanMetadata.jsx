@@ -10,7 +10,7 @@
  * @date 2019-09-20  BGU  layersInfo.restore 方法遍历子级传参遗漏
  *                   添加psd保存类型(另存为) 
  *                   AI文件 嵌入的智能对象忽略处理      
- * @date 2019-09-22  修改 背景层bug（layer.id 是 2 ）     
+ * @date 2019-09-22  修改 背景层bug（背景层id可能是 2 ）     改用itemIndex
  */
 main = function () {
 
@@ -258,7 +258,7 @@ layersInfo.record = function (layers, visibleArr, allLockedArr, posLockedArr) {
             layer.allLocked = false;
             if (layer.positionLocked === true) {
                 //解开移动锁
-                if (layer.id != 1) {//处理忽略背景层  背景从的 id:1 无论存在与否 id:1都是倍占用的
+                if (layer.itemIndex != 0) {//处理忽略背景层  背景从的 itemIndex:0 无论存在与否 itemIndex:0都是被占用的
                     posLockedArr.push(layer.id);
                     layer.positionLocked = false;
 
@@ -269,7 +269,7 @@ layersInfo.record = function (layers, visibleArr, allLockedArr, posLockedArr) {
         if (layer.positionLocked === true) {
             //解开移动锁
             
-            if (layer != app.activeDocument.backgroundLayer) {//处理忽略背景层  背景从的 id:1 无论存在与否 id:1都是倍占用的
+            if (layer.itemIndex != 0) {//处理忽略背景层  背景从的 itemIndex:0 无论存在与否 itemIndex:0都是被占用的
                 posLockedArr.push(layer.id);
                 layer.positionLocked = false;
 
@@ -345,4 +345,4 @@ layersInfo.layerAllLocked = function (layer) {
     return layer.allLocked = true;
 }
 
-//main();
+main();
