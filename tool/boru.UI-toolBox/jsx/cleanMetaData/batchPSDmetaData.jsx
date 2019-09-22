@@ -46,7 +46,7 @@ var getPsdFileName = function (folderPath) {
 
       if (file.name.substr(-4) === ".psd") {//判断是否是psd文件
 
-        $.writeln(file);//打印到控制台
+        $.writeln(decodeURI(file));//打印到控制台
 
         open(file); //打开psd 文件
 

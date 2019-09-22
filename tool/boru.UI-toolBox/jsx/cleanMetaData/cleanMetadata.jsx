@@ -9,7 +9,8 @@
  * @date 2019-09-11  修改背景层解锁问题(临时忽略处理) layersInfo.record {layer.positionLocked === true}
  * @date 2019-09-20  BGU  layersInfo.restore 方法遍历子级传参遗漏
  *                   添加psd保存类型(另存为) 
- *                   AI文件 嵌入的智能对象忽略处理           
+ *                   AI文件 嵌入的智能对象忽略处理      
+ * @date 2019-09-22  修改 背景层bug（layer.id 是 2 ）     
  */
 main = function () {
 
@@ -114,7 +115,7 @@ var layerSetFor = function (layer) {
  * @param {*} document 文档  这里应该是当前激活文档 app.activeDocument
  */
 var saveClose = function (document) {
-    if (document.name.substr(-4) == ".jpg") {//jpg 智能对象 保存会有弹窗            条件位置保存当前文档前
+    if (document.name.substr(-4) == ".jpg"||document.name.substr(-5) == ".JPEG") {//jpg 智能对象 保存会有弹窗            条件位置保存当前文档前
         $.writeln("======保存jpeg类型文件=====");
         jpegSave(document);//jpg 格式保存关闭
         return;
@@ -137,7 +138,7 @@ var psdSave = function (document) {
     var asCopy = true;//用来指定以副本的方式保存。
     var extensionType = Extension.LOWERCASE;//后缀小写
     document.saveAs(fileOut, psd, asCopy, extensionType);//另存为一个文档
-    $.writeln("文件保存到:  "+decodeURI(fileOut));
+    $.writeln("文件保存到:  " + decodeURI(fileOut));
     document.close(SaveOptions.DONOTSAVECHANGES);//关闭原始文档(不保存)
 }
 /**
@@ -192,7 +193,7 @@ var editSmartObject = function (layer) {
 
     executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO);//编辑智能对象
 
-    if (app.activeDocument.name.substr(-4) == ".jpg") {
+    if (app.activeDocument.name.substr(-4) == ".jpg"||app.activeDocument.name.substr(-5) == ".JPEG") {
         cleanMetadata();
         saveClose(app.activeDocument);
         return;
@@ -267,11 +268,14 @@ layersInfo.record = function (layers, visibleArr, allLockedArr, posLockedArr) {
         }
         if (layer.positionLocked === true) {
             //解开移动锁
-            if (layer.id != 1) {//处理忽略背景层  背景从的 id:1 无论存在与否 id:1都是倍占用的
+            
+            if (layer != app.activeDocument.backgroundLayer) {//处理忽略背景层  背景从的 id:1 无论存在与否 id:1都是倍占用的
                 posLockedArr.push(layer.id);
                 layer.positionLocked = false;
 
             }
+            
+
 
 
         }
