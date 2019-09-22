@@ -11,6 +11,7 @@
  *                   添加psd保存类型(另存为) 
  *                   AI文件 嵌入的智能对象忽略处理      
  * @date 2019-09-22  修改 背景层bug（背景层id可能是 2 ）     改用itemIndex
+ *                   修改 成根据是否有背景层返回布尔值  BKOffset 方法 默认是false 如果存在返回true
  */
 main = function () {
 
@@ -115,7 +116,7 @@ var layerSetFor = function (layer) {
  * @param {*} document 文档  这里应该是当前激活文档 app.activeDocument
  */
 var saveClose = function (document) {
-    if (document.name.substr(-4) == ".jpg"||document.name.substr(-5) == ".JPEG") {//jpg 智能对象 保存会有弹窗            条件位置保存当前文档前
+    if (document.name.substr(-4) == ".jpg" || document.name.substr(-5) == ".JPEG") {//jpg 智能对象 保存会有弹窗            条件位置保存当前文档前
         $.writeln("======保存jpeg类型文件=====");
         jpegSave(document);//jpg 格式保存关闭
         return;
@@ -193,7 +194,7 @@ var editSmartObject = function (layer) {
 
     executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO);//编辑智能对象
 
-    if (app.activeDocument.name.substr(-4) == ".jpg"||app.activeDocument.name.substr(-5) == ".JPEG") {
+    if (app.activeDocument.name.substr(-4) == ".jpg" || app.activeDocument.name.substr(-5) == ".JPEG") {
         cleanMetadata();
         saveClose(app.activeDocument);
         return;
@@ -224,9 +225,28 @@ var cleanMetadata = function () {
 
 }
 /**
+ * 判断文档是否存在背景层
+ * 存在返回 true 不存在返回 false
+ */
+var BKOffset = function () {
+    //var backgroundIndexOffset = 0;
+    var bg = false;
+    try {
+        if (app.activeDocument.backgroundLayer) {
+            var bg = true;
+            return bg;
+        }
+
+    }
+    catch (err) {
+    }
+    return bg;
+}
+/**
  * 图层信息
  */
 var layersInfo = {}
+
 
 /**
  * 记录文档中打开时 图层的信息
@@ -258,7 +278,8 @@ layersInfo.record = function (layers, visibleArr, allLockedArr, posLockedArr) {
             layer.allLocked = false;
             if (layer.positionLocked === true) {
                 //解开移动锁
-                if (layer.itemIndex != 0) {//处理忽略背景层  背景从的 itemIndex:0 无论存在与否 itemIndex:0都是被占用的
+                var a = BKOffset();
+                if (bg != true) {//判断当前图层 是否存在背景层  
                     posLockedArr.push(layer.id);
                     layer.positionLocked = false;
 
@@ -268,13 +289,17 @@ layersInfo.record = function (layers, visibleArr, allLockedArr, posLockedArr) {
         }
         if (layer.positionLocked === true) {
             //解开移动锁
-            
-            if (layer.itemIndex != 0) {//处理忽略背景层  背景从的 itemIndex:0 无论存在与否 itemIndex:0都是被占用的
+            var bg = BKOffset();
+            if (bg != true) {//判断当前图层 是否存在背景层
                 posLockedArr.push(layer.id);
                 layer.positionLocked = false;
-
             }
-            
+            // if (layer.itemIndex != bg) {//处理忽略背景层  背景从的 itemIndex:0 无论存在与否 itemIndex:0都是被占用的
+            //     posLockedArr.push(layer.id);
+            //     layer.positionLocked = false;
+
+            // }
+
 
 
 
