@@ -370,4 +370,4 @@ layersInfo.layerAllLocked = function (layer) {
     return layer.allLocked = true;
 }
 
-main();
+//main();
