@@ -46,6 +46,30 @@ BoundsObj.getLayerBounds = function (layer, getType) {
 
 }
 /**
+ * 通过变形修改图层尺寸
+ * @param {*} newW 新的宽
+ * @param {*} newH 新的高
+ */
+var modifyLayerSize = function (newW, newH,layer) {
+    //alert(newW);
+    var boundsInfo = BoundsObj.getLayerBounds(layer, "boundsNoEffects"); 
+    var w = (newW / boundsInfo.w) * 100;
+    var h = (newH / boundsInfo.h) * 100;
+    //alert(w);
+    var idTrnf = charIDToTypeID("Trnf");
+    var desc = new ActionDescriptor();
+    var idWdth = charIDToTypeID("Wdth");
+    var idPrc = charIDToTypeID("#Prc");
+    desc.putUnitDouble(idWdth, idPrc, w);
+    var idHght = charIDToTypeID("Hght");
+    var idPrc = charIDToTypeID("#Prc");
+    desc.putUnitDouble(idHght, idPrc, h);//这里的数是当前尺寸百分比
+    
+    // //$.writeln(h+"  "+w);
+     executeAction(idTrnf, desc, DialogModes.NO);
+
+}
+/**
  * @name 创建图层对象
  * 根据当前图层创建一个新的图层对象
  * name   图层的名字
@@ -83,6 +107,7 @@ BoundsObj.moveLayer = function (layerObj, layer) {
  * @date 2019-09-12 初步功能实现  后续 可能需要 考虑添加蒙版控制 图层组的切图尺寸 
  */
 var main = function () {
+
     var doc = app.activeDocument;
     var layer = doc.activeLayer;
     var layerObj = new LayerObject(layer);
@@ -96,13 +121,18 @@ var main = function () {
 
     BoundsObj.moveLayer(layerObj, layer_hover);
     layer_hover.adjustBrightnessContrast(45, 0);
+    //添加新的图层变化类型 (图层放大缩小)
     //down
     var layer_down = layer.duplicate();
     layer_down.name = layerObj.name + "_down";
     layer_down.move(layerSet, ElementPlacement.PLACEATEND);
     var layerH = new LayerObject(layer_hover);
     BoundsObj.moveLayer(layerH, layer_down);
-    layer_down.adjustBrightnessContrast(-40, 0);
+    //添加新的图层变化类型 (图层放大缩小)
+    modifyLayerSize(70,70,layer_down);
+    
+    
+    //layer_down.adjustBrightnessContrast(-40, 0);
 
 }
 main();

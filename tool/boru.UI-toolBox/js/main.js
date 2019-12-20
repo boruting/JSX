@@ -40,5 +40,9 @@ window.onload=function(){
                    
         css.evalScript('$.evalFile("' + str + "/jsx/test.jsx" + '")');
     });
+    $("#buttonGenerate").mouseup(function () {
+                   
+        css.evalScript('$.evalFile("' + str + "/jsx/buttonGenerate/mainBtnGenerate.jsx" + '")');
+    });
 
 }
