@@ -131,7 +131,7 @@ var main = function () {
     layer_down.adjustBrightnessContrast(-40, 0);
     //添加新的图层变化类型 (图层放大缩小)
     activeDocument.activeLayer = layer_down;
-    modifyLayerSize(70,70,layer_down);
+    modifyLayerSize(layerObj.width*0.8,layerObj.height*0.8,layer_down);
     
     
 
