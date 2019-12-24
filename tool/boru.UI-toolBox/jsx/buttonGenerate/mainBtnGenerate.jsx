@@ -104,7 +104,8 @@ BoundsObj.moveLayer = function (layerObj, layer) {
  * @author boru 
  * @name 按钮生成脚本
  * @description 利用一个 链接对象图层 制作出 悬停帧 和 按下帧 效果并且排列好位置 统一放入一个 图层组 内 修改图层组的名字作为切图用
- * @date 2019-09-12 初步功能实现  后续 可能需要 考虑添加蒙版控制 图层组的切图尺寸 
+ * @date 2019-09-12 初步功能实现  后续 可能需要 考虑添加蒙版控制 图层组的切图尺寸
+ * @date 2019-12-24 添加了缩小类型 
  */
 var main = function () {
 
@@ -118,21 +119,21 @@ var main = function () {
     var layer_hover = layer.duplicate();
     layer_hover.name = layerObj.name + "_hover";
     layer_hover.move(layerSet, ElementPlacement.PLACEATEND);
-
     BoundsObj.moveLayer(layerObj, layer_hover);
     layer_hover.adjustBrightnessContrast(45, 0);
-    //添加新的图层变化类型 (图层放大缩小)
+   
     //down
     var layer_down = layer.duplicate();
     layer_down.name = layerObj.name + "_down";
     layer_down.move(layerSet, ElementPlacement.PLACEATEND);
     var layerH = new LayerObject(layer_hover);
     BoundsObj.moveLayer(layerH, layer_down);
+    layer_down.adjustBrightnessContrast(-40, 0);
     //添加新的图层变化类型 (图层放大缩小)
+    activeDocument.activeLayer = layer_down;
     modifyLayerSize(70,70,layer_down);
     
     
-    //layer_down.adjustBrightnessContrast(-40, 0);
 
 }
 main();
