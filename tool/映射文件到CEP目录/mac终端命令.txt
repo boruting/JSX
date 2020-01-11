@@ -1,0 +1,13 @@
+ln -s /Volumes/MacintoshHD/个人空间/Git/JSX/tool/boru.UI-tool /Library/Application\ Support/Adobe/CEP/extensions/
+
+Ln -s 软连接 
+前路径 原地址
+后路径 ps插件位置 
+前后路径空格分开
+
+Pwd 查看当前文件路径
+Cd 进入文件
+Cd - 回到上一个目录 或 cd ..
+Ls 显示当前目录下的文件内容
+
+修改 extensions文件夹 权限 （右键 显示简介 下方权限）
