@@ -12,6 +12,9 @@
  *                   AI文件 嵌入的智能对象忽略处理      
  * @date 2019-09-22  修改 背景层bug（背景层id可能是 2 ）     改用itemIndex
  *                   修改 成根据是否有背景层返回布尔值  BKOffset 方法 默认是false 如果存在返回true
+ * @date 2020-06-23  修改 添加跳过清理过的智能对象条件  (图层名最后添加 忽略 2个文字) 建议用 " + 忽略" 的形式 ps生产模式下 "+" 被占用
+ * 
+ *
  */
 main = function () {
 
@@ -191,7 +194,10 @@ var editSmartObject = function (layer) {
         return;
     }
 
-
+    if(layer.name.substr(-2)=="忽略"){
+        $.writeln("重复智能对象");
+        return;
+    }
     executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO);//编辑智能对象
 
     if (app.activeDocument.name.substr(-4) == ".jpg" || app.activeDocument.name.substr(-5) == ".JPEG") {
