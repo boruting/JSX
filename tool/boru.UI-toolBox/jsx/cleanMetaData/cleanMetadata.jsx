@@ -204,27 +204,30 @@ var editSmartObject = function(layer, smartArr) {
     activeDocument.activeLayer = layer; //选中当前激活文档的当前图层
 
     var smartName = smartObjectType(); //返回智能对象文件名字
-    if (smartName.substr(-2) == "ai") {
-        $.writeln("这条图层是个AI智能对象 " + smartName);
+    if (layer.name.substr(-2) == "忽略") {
+        $.writeln("不需要处理的");
         return;
-    }
-    if (smartArr.length > 0) { //处理重复智能对象
-        for (var i = 0; i < smartArr.length; i++) {
-            if (smartName === smartArr[i]) {
-                $.writeln("重复智能对象");
-                return;
-            }
-        }
-        smartArr.push(smartName); //smartName 添加到数组中
-        $.writeln("智能对象数组: " + smartArr);
     } else {
-        smartArr.push(smartName); //smartName 添加到数组中
-        $.writeln("智能对象数组: " + smartArr);
+        if (smartName.substr(-2) == "ai") {
+            $.writeln("这条图层是个AI智能对象 " + smartName);
+            return;
+        }
+        if (smartArr.length > 0) { //处理重复智能对象
+            for (var i = 0; i < smartArr.length; i++) {
+                if (smartName === smartArr[i]) {
+                    $.writeln("重复智能对象");
+                    return;
+                }
+            }
+            smartArr.push(smartName); //smartName 添加到数组中
+            $.writeln("智能对象数组: " + smartArr);
+        } else {
+            smartArr.push(smartName); //smartName 添加到数组中
+            $.writeln("智能对象数组: " + smartArr);
+        }
     }
-    // if (layer.name.substr(-2) == "忽略") {
-    //     $.writeln("重复智能对象");
-    //     return;
-    // }
+
+
     executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO); //编辑智能对象
 
     if (app.activeDocument.name.substr(-4) == ".jpg" || app.activeDocument.name.substr(-5) == ".JPEG") {
