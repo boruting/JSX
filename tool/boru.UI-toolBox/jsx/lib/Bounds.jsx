@@ -15,7 +15,7 @@ BoundsObj._value = function (value, defaultValue) {
  * @param {*} layer 暂时是当前图层
  * @param {*} getType 获取边类型，默认为："boundsNoEffects"，还可以是："bounds"、"boundsNoMask"
  */
-BoundsObj.getLayerBounds = function (layer, getType) {
+var getLayerBounds = function (layer, getType) {
 
     var boundsInfo = { x: null, y: null, w: null, h: null, right: null, bottom: null }
     var classStr = BoundsObj._value(getType, "boundsNoEffects");//"bounds"、"boundsNoMask"
@@ -31,5 +31,14 @@ BoundsObj.getLayerBounds = function (layer, getType) {
     boundsInfo.h = boundsInfo.bottom - boundsInfo.y;
 
     return boundsInfo;
+
+}
+
+var layerMove = function (newX, newY) {
+    var layer = app.activeDocument.activeLayer;
+    var boundsInfo = getLayerBounds(layer, "boundsNoEffects");
+    var x = 0 - (boundsInfo.x - newX);
+    var y = 0 - (boundsInfo.y - newY);
+    layer.translate(x, y);
 
 }

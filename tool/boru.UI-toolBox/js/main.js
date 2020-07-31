@@ -44,5 +44,9 @@ window.onload=function(){
                    
         css.evalScript('$.evalFile("' + str + "/jsx/buttonGenerate/mainBtnGenerate.jsx" + '")');
     });
+    $("#MarkUI").mouseup(function () {
+                   
+        css.evalScript('$.evalFile("' + str + "/jsx/MarkUI.jsx" + '")');
+    });
 
 }
