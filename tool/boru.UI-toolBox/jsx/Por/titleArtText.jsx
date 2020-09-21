@@ -59,7 +59,7 @@ function contentsToArr(layers) {
 
             var textItem = layer.textItem;
             var con = textItem.contents;
-            var arr = Array.prototype.slice.call(con);//字符串转数字
+            var arr = Array.prototype.slice.call(con);
             //$.writeln(arr);
             return arr;
         }
@@ -113,5 +113,5 @@ function exportPNG(arr) {
         }
 
     }
-
+    activeDocument.close(SaveOptions.SAVECHANGES);
 }

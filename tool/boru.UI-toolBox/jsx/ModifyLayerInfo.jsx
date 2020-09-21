@@ -1,5 +1,6 @@
 ﻿var layer = app.activeDocument.activeLayer;
 var pro = prompt("输入新的W,H,X,Y", "100,100,100,100", "图层坐标修改");
+//var pro = "206,279"
 $.writeln("    在" + pro);
 var newW = pro.split(",")[0];
 var newH = pro.split(",")[1];

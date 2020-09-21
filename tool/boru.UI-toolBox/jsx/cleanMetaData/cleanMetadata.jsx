@@ -16,6 +16,8 @@
  * 
  *
  * @date 2020-07-30  修改跳过重复智能对象功能  通过smartObjectType 返回的 SmartName 判断是否为重复
+ * @date 2020-08-16  连接对象丢失BUG(脚本运行失败)  
+ * @date 2020-08-19  异常BUG 有些智能对象会不打开清理-------------------------- 
  *
  */
 main = function() {
@@ -142,9 +144,9 @@ var saveClose = function(document) {
 var psdSave = function(document) {
     var sddd = decodeURI(document.path).substring(2, decodeURI(document.path).length); //
     $.writeln(sddd);
-    var fileOut = new File("/f" + sddd + "/");
+    //var fileOut = new File("/f" + sddd + "/");
 
-    //var fileOut = new File(document.path + "/" + "newCopy_" + document.name);//文件保存的路径和名字(在源文件名前加了newCopy_)
+    var fileOut = new File(document.path + "/" + "newCopy_" + document.name);//文件保存的路径和名字(在源文件名前加了newCopy_)
 
     $.writeln(decodeURI(fileOut));
     var psd = PhotoshopSaveOptions; //psd格式保存
@@ -189,7 +191,8 @@ var smartObjectType = function() {
     var options = executeAction(charIDToTypeID("getd"), d, DialogModes.NO);
     options = options.getObjectValue(stringIDToTypeID("smartObject"));
     var SmartName = options.getString(stringIDToTypeID("fileReference"));
-    $.writeln(SmartName);
+    //var a1 = options.getString(stringIDToTypeID("Path"));
+    //$.writeln(a1);
     return SmartName;
 
 

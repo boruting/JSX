@@ -48,5 +48,13 @@ window.onload=function(){
                    
         css.evalScript('$.evalFile("' + str + "/jsx/MarkUI.jsx" + '")');
     });
+    $("#ArtText").mouseup(function () {
+                   
+        css.evalScript('$.evalFile("' + str + "/jsx/ArtTextN.jsx" + '")');
+    });
+    $("#titleArtText").mouseup(function () {
+                   
+        css.evalScript('$.evalFile("' + str + "/jsx/Por/titleArtText.jsx" + '")');
+    });
 
 }
