@@ -13,7 +13,7 @@ var exportIcon = function(layer) {
     var fileNames = fileName.split(".");
     var size = fileNames[0].split("-")[1];
 
-    $.writeln(size); //打印
+    //$.writeln(size); //打印
 
     var pngOutAssetsName = fileNames[0] + "-assets/"; //需要保存图片的文件
     var parentPath = docFile.path + "/" + pngOutAssetsName;
@@ -49,14 +49,14 @@ var LayerVisibleFalse = function(layers) {
 var doc = app.activeDocument;
 var layers = doc.layers;
 LayerVisibleFalse(layers);
-$.writeln("size");
+//$.writeln("size");
 
 for (var i = 0, len = layers.length; i < len; i++) {
     var layer = layers[i];
     layer.visible = true;
     exportIcon(layer);
     layer.visible = false;
-    $.writeln("啊");
+    //$.writeln("啊");
 }
 alert("完成");
 //===========

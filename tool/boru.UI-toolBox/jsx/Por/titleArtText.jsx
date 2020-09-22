@@ -6,6 +6,7 @@
  * @date 2020-09-21 创建
  *
  */
+ 
 var doc = app.activeDocument;
 var layers = doc.layers;
 main(layers);

@@ -56,5 +56,9 @@ window.onload=function(){
                    
         css.evalScript('$.evalFile("' + str + "/jsx/Por/titleArtText.jsx" + '")');
     });
+    $("#exportIcon").mouseup(function () {
+                   
+        css.evalScript('$.evalFile("' + str + "/jsx/exportIcon.jsx" + '")');
+    });
 
 }

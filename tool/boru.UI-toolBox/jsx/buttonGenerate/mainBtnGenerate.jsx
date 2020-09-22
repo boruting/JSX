@@ -10,7 +10,14 @@
  * @. 创建蒙版  真对组 btn_public0.png 这个图层 创建一个蒙版 蒙版的大小等于 btn_public0 宽高 乘以 3 位子等于btn_public0 (未使用)
  */
 
+
 var BoundsObj = {};
+
+/**
+ * 
+ * @param {*} value 
+ * @param {*} defaultValue 
+ */
 BoundsObj._value = function (value, defaultValue) {
     if (value != undefined) {
         return value;
