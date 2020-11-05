@@ -146,7 +146,7 @@ var psdSave = function(document) {
     $.writeln(sddd);
     //var fileOut = new File("/f" + sddd + "/");
 
-    var fileOut = new File(document.path + "/" + "newCopy_" + document.name);//文件保存的路径和名字(在源文件名前加了newCopy_)
+    var fileOut = new File(document.path + "/"  + document.name);//文件保存的路径和名字(在源文件名前加了newCopy_)
 
     $.writeln(decodeURI(fileOut));
     var psd = PhotoshopSaveOptions; //psd格式保存
