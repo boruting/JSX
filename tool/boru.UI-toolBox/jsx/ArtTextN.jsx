@@ -4,6 +4,8 @@
  * @description 同一个尺寸多个文本样式 导出 png图片 脚本(可扩展文本实际像素大小) psd文件的文本图层需要和表格 E列(对应图层) 内容相同
  * @weixin JackdawTing
  * @date 2020-09-21 创建
+                    需要表格名称和psd文档名一致
+ * @date 2020-12-02 添加初始化 图层全隐藏处理 layer_.visible = false;
  *
  */
 var file = File($.fileName);
@@ -18,6 +20,11 @@ function xlsxData() {
     var doc = app.activeDocument;
     var layers = doc.layers;
 
+    for (var lay = 0; lay < layers.length; lay++) { //遍历所有图层 全部图层都隐藏
+        var layer_ = layers[lay];
+        layer_.visible = false; //隐藏图层
+    }
+
     var docFile = doc.fullName; //当前文档的路径全名
 
     var filePaths = docFile.fullName.split("/");
@@ -28,7 +35,7 @@ function xlsxData() {
         $.writeln("保存");
     }
     var excelFile = new File(pat); // 需要打开xlsx文档 
-    var pngOutAssetsName = fileNames[0]+"-assets"; //需要保存图片的文件
+    var pngOutAssetsName = fileNames[0] + "-assets"; //需要保存图片的文件
     saveOption = new ExportOptionsSaveForWeb();
     saveOption.format = SaveDocumentType.PNG;
     saveOption.PNG8 = false;
@@ -60,7 +67,7 @@ function xlsxData() {
 
                                 if (layer.name == layerName) {
 
-                                    layer.visible = true;//显示图层
+                                    layer.visible = true; //显示图层
                                     textItem = layer.textItem;
                                     //修改文本内容
                                     textItem.contents = text.replace(/&#10;/g, "\n").replace(/&#13;/g, "\r").replace(/\r?\n/g, "\r");
@@ -81,14 +88,14 @@ function xlsxData() {
                         var outfile = new File(parentPath + "/" + tFileName + ".png"); //保存图片到
 
                         doc.exportDocument(outfile, ExportType.SAVEFORWEB, saveOption); //保存
-                        layer.visible = false;//隐藏图层
+                        layer.visible = false; //隐藏图层
 
 
                     }
                 }
             }
         }
-        alert("成功 完成"+"\n导出 "+(len-1)+"张 png图片");
+        alert("成功 完成" + "\n导出 " + (len - 1) + "张 png图片");
     } else {
         alert("失败 对应xlsx文档错误\n请核对 xlsx文件名 是否 与 psd文件名 相同");
     }

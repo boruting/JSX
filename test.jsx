@@ -1,93 +1,45 @@
-/**
- * 导出图片
- */
-var exportIcon = function(layer) {
+var file = File($.fileName);
+var p = decodeURI(file.parent.parent);
+$.evalFile(p + "/jsx/importLnkd.jsx");
 
-    saveOption = new ExportOptionsSaveForWeb();
-    saveOption.format = SaveDocumentType.PNG;
-    saveOption.PNG8 = false;
-
-    var docFile = doc.fullName;
-    var filePaths = docFile.fullName.split("/");
-    var fileName = filePaths[filePaths.length - 1];
-    var fileNames = fileName.split(".");
-    var size = fileNames[0].split("-")[1];
-
-    $.writeln(size); //打印
-
-    var pngOutAssetsName = fileNames[0] + "-assets/"; //需要保存图片的文件
-    var parentPath = docFile.path + "/" + pngOutAssetsName;
-    var folder = new Folder(parentPath);
-    if (!folder.exists) {
-        // alert("这里是folder.exists ");					
-        folder.create(); //创建文件夹
-    }
-
-    var imgName = layer.name + "-" + size + ".png"; //图片名字
-
-    var outfile = new File(parentPath + "/" + imgName); //保存图片到
-    doc.exportDocument(outfile, ExportType.SAVEFORWEB, saveOption);
-
-}
-/**
- * 隐藏图层
- */
-var LayerVisibleFalse = function(layers) {
-    for (var i = 0, len = layers.length; i < len; i++) {
-        var layer = layers[i];
-        layer.visible = false;
-
-        // if (layer.layers) { //遍历图层组
-        //     LayerVisibleFalse(layer.layers);
-        // }
+var name = decodeURI(app.activeDocument.name);
+//	name = name.substring(0, name.indexOf("."));
 
 
-    }
-}
 
-//main
-var doc = app.activeDocument;
-var layers = doc.layers;
-LayerVisibleFalse(layers);
-$.writeln("size");
+//saveEXML
+var PSDname = decodeURI(app.activeDocument.name);
+PSDname = PSDname.substring(0, PSDname.indexOf("."));
 
-for (var i = 0, len = layers.length; i < len; i++) {
+var dir = app.activeDocument.path + "/exml/" + PSDname + "/";
+new Folder(dir).create();
+var layers = app.activeDocument.layers;
+
+var stageWidth = 100; //获取当前画板或者文档的宽
+var stageHeight = 100; //获取当前画板或者文档的高
+
+var exml = "<?xml version='1.0' encoding='utf-8'?>\n";
+$.writeln(exml);
+exml += '<e:Skin  width=\"' + stageWidth + '\" height=\"' + stageHeight + '\" xmlns:e=\"http://ns.egret.com/eui\" xmlns:w=\"http://ns.egret.com/wing\">'
+
+$.writeln(exml);
+for (var i = 0; i < layers.lenght; i++) {
     var layer = layers[i];
-    layer.visible = true;
-    exportIcon(layer);
-    layer.visible = false;
-    $.writeln("啊");
+    var x = 10; //获取当前图层的坐标x
+    var y = 10; //获取当前图层的坐标y
+
+    exml += '\n     <e:Image source=\"' + layers[0].name + '_png' + '\" x=\"' + x + '\" y=\"' + y + '\"/>';
+    $.writeln(exml);
+    exml += "\n</e:Skin>"
+    $.writeln(exml);
+
 }
-alert("完成");
-//===========
 
 
-/**
- * 创建新的文档
- */
-function newDOC(size) {
-    //定义一个变量[Width]，表示新文档的宽度。
-    var width = size;
-
-    //定义一个变量[height]，表示新文档的高度。
-    var height = size;
-
-    //定义一个变量[resolution]，表示新文档的分辨率。
-    var resolution = 72;
-
-    //定义一个变量[docName]，表示新文档的名称。
-    var docName = "New Document";
-
-    //定义一个变量[mode]，表示新文档的颜色模式。
-    var mode = NewDocumentMode.RGB;
-
-    //定义一个变量[initialFill]，表示新文档的默认背景填充颜色。
-    var initialFill = DocumentFill.TRANSPARENT;
-
-    //定义一个变量[pixelAspectRatio]，用来设置新文档的像素比率。
-    var pixelAspectRatio = 1;
-
-    //使用[Documents.add]命令创建一个新文档，将设置好的参数放在[add]方法里面。
-    app.documents.add(width, height, resolution, docName, mode, initialFill, pixelAspectRatio);
-    activeDocument.close(SaveOptions.SAVECHANGES);
-}
+var file = new File(dir + PSDname + ".exml");
+file.remove();
+file.open("a");
+file.lineFeed = "\n";
+file.encoding = "utf-8";
+file.write(exml);
+file.close();

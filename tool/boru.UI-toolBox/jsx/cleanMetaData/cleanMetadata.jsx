@@ -18,6 +18,8 @@
  * @date 2020-07-30  修改跳过重复智能对象功能  通过smartObjectType 返回的 SmartName 判断是否为重复
  * @date 2020-08-16  连接对象丢失BUG(脚本运行失败)  
  * @date 2020-08-19  异常BUG 有些智能对象会不打开清理-------------------------- 
+ * @date 2020-11-09  添加对链接对象的处理 判断是链接对象还是智能对象 链接对象链接文件是否存在(getPath(stringIDToTypeID("link"))
+ * @date 2020-11-12  取消了对连接对象的清理编辑操作(忽略 连接对象图层)
  *
  */
 main = function() {
@@ -35,7 +37,7 @@ main = function() {
             return false;
 
         }
-
+        //log.writeln();
         //alert("PSD文件 原始数据 MXP 清理完成");
         cleanMetadata(); //先清理下当前的psd 文件数据
         //app.activeDocument.saveAs(app.activeDocument.path);//保存一次
@@ -58,7 +60,7 @@ var cleanDocumentMetadata = function() {
     var posLockedArr = []; //图层移动锁定属性数组
     var allLockedArr = []; //图层全锁定属性数组
     var smartArr = []; //重复智能对象
-
+    aDoc.activeLayer = layers[layers.length - 1]; //选中图层最下方的图层 目的是防止当前文档所有图层都被选中
     cleanMetadata();
     //记录图层信息
     layersInfo.record(app.activeDocument.layers, visibleArr, allLockedArr, posLockedArr);
@@ -144,10 +146,9 @@ var saveClose = function(document) {
 var psdSave = function(document) {
     var sddd = decodeURI(document.path).substring(2, decodeURI(document.path).length); //
     $.writeln(sddd);
-    //var fileOut = new File("/f" + sddd + "/");
+    //var fileOut = new File("E:/000" + sddd + "/");
 
-    var fileOut = new File(document.path + "/"  + document.name);//文件保存的路径和名字(在源文件名前加了newCopy_)
-
+    var fileOut = new File(document.path + "/" + document.name);
     $.writeln(decodeURI(fileOut));
     var psd = PhotoshopSaveOptions; //psd格式保存
     var asCopy = false; //用来指定以副本的方式保存。
@@ -182,7 +183,7 @@ var jpegSave = function(document) {
 /**
  * 返回一个智能对象的引用类型
  */
-var smartObjectType = function() {
+var smartObjectOptions = function() {
     var r = new ActionReference();
     var d = new ActionDescriptor();
 
@@ -190,10 +191,10 @@ var smartObjectType = function() {
     d.putReference(charIDToTypeID('null'), r);
     var options = executeAction(charIDToTypeID("getd"), d, DialogModes.NO);
     options = options.getObjectValue(stringIDToTypeID("smartObject"));
-    var SmartName = options.getString(stringIDToTypeID("fileReference"));
-    //var a1 = options.getString(stringIDToTypeID("Path"));
-    //$.writeln(a1);
-    return SmartName;
+    //var SmartName = options.getString(stringIDToTypeID("fileReference"));
+    //var smartPath = options.getPath(stringIDToTypeID("link"));//获取链接路径(getPath)
+    //$.writeln(smartPath);
+    return options;
 
 
 }
@@ -206,7 +207,8 @@ var editSmartObject = function(layer, smartArr) {
 
     activeDocument.activeLayer = layer; //选中当前激活文档的当前图层
 
-    var smartName = smartObjectType(); //返回智能对象文件名字
+    var smartName = smartObjectOptions().getString(stringIDToTypeID("fileReference")); //返回智能对象文件名字
+
     if (layer.name.substr(-2) == "忽略") {
         $.writeln("不需要处理的");
         return;
@@ -230,8 +232,26 @@ var editSmartObject = function(layer, smartArr) {
         }
     }
 
+    try { //判断是否为链接对象
+        var smartPath = smartObjectOptions().getPath(stringIDToTypeID("link")); //获取链接路径(getPath)
+        
+    } catch (e) {
+        var smartPath = null;
+    }
+    if (smartPath == null) {
+        executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO);
+    } else {
+        // var smartPathBoolean = new File(smartPath);
+        // if (smartPathBoolean.exists) {
+        //     executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO); //编辑智能对象
+        // } else {
+        //     $.writeln("缺少链接对象");
 
-    executeAction(stringIDToTypeID("placedLayerEditContents"), undefined, DialogModes.NO); //编辑智能对象
+        //     return;
+        // }
+        return;
+
+    }
 
     if (app.activeDocument.name.substr(-4) == ".jpg" || app.activeDocument.name.substr(-5) == ".JPEG") {
         cleanMetadata();
