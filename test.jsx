@@ -1,45 +1,51 @@
-var file = File($.fileName);
-var p = decodeURI(file.parent.parent);
-$.evalFile(p + "/jsx/importLnkd.jsx");
-
-var name = decodeURI(app.activeDocument.name);
-//	name = name.substring(0, name.indexOf("."));
+var json = [];
 
 
 
-//saveEXML
-var PSDname = decodeURI(app.activeDocument.name);
-PSDname = PSDname.substring(0, PSDname.indexOf("."));
 
-var dir = app.activeDocument.path + "/exml/" + PSDname + "/";
-new Folder(dir).create();
-var layers = app.activeDocument.layers;
 
-var stageWidth = 100; //获取当前画板或者文档的宽
-var stageHeight = 100; //获取当前画板或者文档的高
 
-var exml = "<?xml version='1.0' encoding='utf-8'?>\n";
-$.writeln(exml);
-exml += '<e:Skin  width=\"' + stageWidth + '\" height=\"' + stageHeight + '\" xmlns:e=\"http://ns.egret.com/eui\" xmlns:w=\"http://ns.egret.com/wing\">'
 
-$.writeln(exml);
-for (var i = 0; i < layers.lenght; i++) {
-    var layer = layers[i];
-    var x = 10; //获取当前图层的坐标x
-    var y = 10; //获取当前图层的坐标y
 
-    exml += '\n     <e:Image source=\"' + layers[0].name + '_png' + '\" x=\"' + x + '\" y=\"' + y + '\"/>';
-    $.writeln(exml);
-    exml += "\n</e:Skin>"
-    $.writeln(exml);
+
+
+
+
+var role={
+
+    name:"",
+    lv:0,
+    exp:0
 
 }
+json.push(role);
+saveJSON(role,"text_aa");
+
+var file = new File("C:/Users/Administrator/Desktop/test/test.json");
+    file.remove();
+    file.open("a");
+    file.lineFeed = "\n";
+    file.encoding = "utf-8";
+    file.write(json.push(role));
+    file.close();
 
 
-var file = new File(dir + PSDname + ".exml");
-file.remove();
-file.open("a");
-file.lineFeed = "\n";
-file.encoding = "utf-8";
-file.write(exml);
-file.close();
+function saveJSON(data, filename){
+	if(!data) {
+		alert('保存的数据为空');
+		return;
+	}
+	if(!filename) 
+		filename = 'json.json'
+	if(typeof data === 'object'){
+		data = JSON.stringify(data, undefined, 4)
+	}
+	var blob = new Blob([data], {type: 'text/json'}),
+	e = document.createEvent('MouseEvents'),
+	a = document.createElement('a')
+	a.download = filename
+	a.href = window.URL.createObjectURL(blob)
+	a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
+	e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+	a.dispatchEvent(e)
+}

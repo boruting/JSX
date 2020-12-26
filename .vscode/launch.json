@@ -9,9 +9,9 @@
             "type": "extendscript-debug",
             "request": "launch",
             "name": "Ask for script name",
-            "program": "${workspaceFolder}/tool/boru.UI-toolBox/jsx/PStoExml.jsx", //tool\boru.UI-toolBox\jsx\artText  //artText/main.jsx
+            //"program": "${workspaceFolder}/tool/boru.UI-toolBox/jsx/PStoExml.jsx", //tool\boru.UI-toolBox\jsx\artText  //artText/main.jsx
             //"program": "${workspaceFolder}/tool/boru.UI-tool/jsx/outputText/parseFile.jsx",
-            //"program": "${workspaceFolder}/test.jsx",
+            "program": "${workspaceFolder}/test.js",
             "stopOnEntry": false
         }
     ]

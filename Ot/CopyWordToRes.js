@@ -5,7 +5,7 @@ var path = require("path");
 require("buffer");
 var spawnSync = require('child_process').spawnSync;
 
-//exeÂ·¾¶
+//exeè·¯å¾„
 const EXE_PATH = "D:/junyou2016/huancheng/ui/exe";
 
 build();
@@ -52,9 +52,9 @@ function solve(inDir, outDir) {
 }
 
 /**
- * Í¬²½±éÀúÎÄ¼ş¼Ğ£¬½«ÎÄ¼şÂ·¾¶·ÅÈëÊı×é£¬Ä¬ÈÏ²»¿½±´.svnÎÄ¼ş¼ĞºÍthumbs.db
+ * åŒæ­¥éå†æ–‡ä»¶å¤¹ï¼Œå°†æ–‡ä»¶è·¯å¾„æ”¾å…¥æ•°ç»„ï¼Œé»˜è®¤ä¸æ‹·è´.svnæ–‡ä»¶å¤¹å’Œthumbs.db
  * @param {string} path
- * @return {Array} ÎÄ¼şÁĞ±í
+ * @return {Array} æ–‡ä»¶åˆ—è¡¨
  */
 function walkDirSync(path, fileList, excludeReg) {
     var dirList = fs.readdirSync(path);
@@ -75,33 +75,33 @@ function walkDirSync(path, fileList, excludeReg) {
 
 
 /**
- * »ñÈ¡°´Å¥Ãû³Æ
- * @param {string} name ÎÄ¼şÃû
- * @returns {string} ´¦ÀíºÃµÄÎÄ¼şÃû
+ * è·å–æŒ‰é’®åç§°
+ * @param {string} name æ–‡ä»¶å
+ * @returns {string} å¤„ç†å¥½çš„æ–‡ä»¶å
  */
 function getButtonName(name) {
     return md5(name).substring(0, 10).toLowerCase();
 }
 
 /**
- * ÓÃÓÚ´¦Àí×Ö·û´®»òÕßÎÄ¼şµÄmd5
- * @param {string}|{Buffer} ´ø´¦ÀíµÄÊı¾İ
- * @return {string} md5×Ö·û´®
+ * ç”¨äºå¤„ç†å­—ç¬¦ä¸²æˆ–è€…æ–‡ä»¶çš„md5
+ * @param {string}|{Buffer} å¸¦å¤„ç†çš„æ•°æ®
+ * @return {string} md5å­—ç¬¦ä¸²
  */
 function md5(data) {
     if (typeof data === "string") {
         data = new Buffer(data);
     }
     if (!Buffer.isBuffer(data)) {
-        throw new Error("Ö»ÄÜ½ÓÊÜ×Ö·û´®»òÕßBuffer¶ÔÏó");
+        throw new Error("åªèƒ½æ¥å—å­—ç¬¦ä¸²æˆ–è€…Bufferå¯¹è±¡");
     }
     return crypto.createHash('md5').update(data).digest('hex');
 }
 
 /**
- * Ê¹ÓÃpngQuant´¦ÀíÍ¼Æ¬
- * @param {string} pathIn   Òª´¦ÀíµÄÍ¼Æ¬
- * @param {string} pathOut  ´¦ÀíºÃµÄÍ¼Æ¬
+ * ä½¿ç”¨pngQuantå¤„ç†å›¾ç‰‡
+ * @param {string} pathIn   è¦å¤„ç†çš„å›¾ç‰‡
+ * @param {string} pathOut  å¤„ç†å¥½çš„å›¾ç‰‡
  */
 function pngQuant(pathIn, pathOut) {
     console.log(pathIn, pathOut);
