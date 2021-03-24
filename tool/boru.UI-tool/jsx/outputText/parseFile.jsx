@@ -1,11 +1,13 @@
 ﻿/*
 //测试区
-$.evalFile(File($.fileName).path + "/helper.js");
+var fff = File($.fileName).parent.parent.parent;
+$.evalFile(fff + "/js/helper.js");
+$.evalFile(File($.fileName).path + "/handlePX.jsx");
 $.global.getExcelLines = getExcelLines;
 var test = File($.fileName).path;
-var pat = "E:/至尊霸主/UI/psd/Z-字体/数字.xlsx";
+var pat = "D:/sg2/psd/文档/数字.xlsx";
 var assetsName = "assetsText";
-var typeVal = "type1";
+var typeVal = "type3";
 parseFile(pat, assetsName, typeVal);
 */
 function parseFile(pat, assetsName, typeVal) {
@@ -109,6 +111,41 @@ function parseFile(pat, assetsName, typeVal) {
                                 rasterizeLayer();
                                 //创建 图层实际像素全区
                                 actualXuanqu();
+
+                                //剪裁画布大小 到 图层实际像素 
+                                cropDounds();
+                                //web方式保存图片到指定目录
+                                var outfile = new File(parentPath + "/" + tFileName + ".png"); //保存图片到
+                                //$.writeln(outfile);
+                                doc.exportDocument(outfile, ExportType.SAVEFORWEB, saveOption);
+                                //还原历史记录到打开时
+                                returnRecords();
+
+                            }
+                            if (type == "type3") {
+
+                                //栅格化图层样式
+                                rasterizeLayer();
+                                //创建 图层实际像素全区
+                                actualXuanqu();
+                                //延申选区
+
+                                //var doc = app.activeDocument;
+                                var type2 = SelectionType.EXTEND;//延申选区
+                                var feather = 0;//表示构建选区时的羽化值
+                                var antiAlias = true;//表示构建选区时是否抗锯齿。
+                                //当前图层边界信息
+                                var bounds = doc.selection.bounds;
+                                var x = bounds[0].value;
+                                var y = 0;
+                                var w = bounds[2].value;
+                                //var h = boundsInfo.h;
+                                var h = doc.height;
+
+                                var region = [[x, y], [w, y], [w, h], [x, h]];
+
+
+                                doc.selection.select(region, type2, feather, antiAlias);
                                 //剪裁画布大小 到 图层实际像素 
                                 cropDounds();
                                 //web方式保存图片到指定目录
@@ -120,18 +157,22 @@ function parseFile(pat, assetsName, typeVal) {
 
                             }
 
+
                         }
 
                     }
-                    textItem.contents = oldText;
+
                 }
+                textItem.contents = oldText;
             }
         }
     }
     alert("处理完成!");
 }
 
-var amendTextContents = function(txtContents) {
+
+
+var amendTextContents = function (txtContents) {
 
     var docRef = activeDocument;
     var layers = docRef.layers;

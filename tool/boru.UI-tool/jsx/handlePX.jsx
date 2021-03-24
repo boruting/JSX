@@ -1,4 +1,28 @@
-﻿/**
+﻿//$.evalFile(File($.fileName).parent + "/lib/kersBoru_lib.jsx");
+/**
+* 延申选区
+*/
+function extendXuanqu (){
+    var doc = app.activeDocument;
+    var type2 = SelectionType.EXTEND;//延申选区
+    var feather = 0;//表示构建选区时的羽化值
+    var antiAlias = true;//表示构建选区时是否抗锯齿。
+    //当前图层边界信息
+    var bounds = doc.selection.bounds;
+    var x = bounds[0].value;
+    var y = bounds[1].value;
+    var w = bounds[2].value;
+    //var h = boundsInfo.h;
+    var h = doc.height;
+
+    var region = [[x, y], [w, y], [w, h], [x, h]];
+
+    
+    doc.selection.select(region, type2, feather, antiAlias);
+
+
+}
+/**
 *剪裁画布大小 到 图层实际像素 
 */
 function cropDounds() {

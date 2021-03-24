@@ -35,8 +35,8 @@ function parseFile(pat, assetsName, imgTypeVal, nameTypeVal) {
 
         if (excelFile.exists) {
 
-            //var lines = getExcelLines(excelFile);
-            var lines = getExcelLines(excelFile, sheetName);
+            var lines = getExcelLines(excelFile);
+            //var lines = getExcelLines(excelFile, sheetName);
 
             if (lines) {
 
