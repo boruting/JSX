@@ -28,7 +28,7 @@ function xlsxData() {
   var fileName = filePaths[filePaths.length - 1];
   var fileNames = fileName.split(".");
   //var pat = docFile.path + "/" + fileNames[0] + ".xlsx";
-  var pat = "D:/sg2/psd/文档/页签1.xlsx";
+  var pat = "D:/sg2/psd/文档/章节设定1.xlsx";
   if (pat.exists) {
     $.writeln("保存");
   }
@@ -52,12 +52,12 @@ function xlsxData() {
           var layerName = line[4]; //第5列 对应图层 
 
 
-
+67
           if (ignore != 1) {
 
-            if (text.indexOf("," > 1)) {
+            if (text.indexOf("/" > 1)) {
 
-              var txt = text.split(",");
+              var txt = text.split("/");
               var txt_1 = txt[0];
               var txt_2 = txt[1];
             } else {

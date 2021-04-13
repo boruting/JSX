@@ -10,7 +10,7 @@
             "type": "extendscript-debug",
             "request": "launch",
             "name": "Ask for script name",
-            "program": "${workspaceFolder}/tool/boru.UI-toolBox/jsx/test.jsx", //tool\boru.UI-toolBox\jsx\artText  //artText/main.jsx
+            "program": "${workspaceFolder}/tool/boru.UI-toolBox/jsx/ArtTextTwo.jsx", //tool\boru.UI-toolBox\jsx\artText  //artText/main.jsx
             //"program": "${workspaceFolder}/tool/boru.UI-tool/jsx/outputText/parseFile.jsx",
             //"program": "${workspaceFolder}/test.jsx",
             "stopOnEntry": false
