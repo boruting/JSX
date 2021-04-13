@@ -71,7 +71,7 @@ function parseFile(pat, assetsName, typeVal) {
                             //}
                             textItem.contents = text.replace(/&#10;/g, "\n").replace(/&#13;/g, "\r").replace(/\r?\n/g, "\r");
                             // alert("这里是  "+textItem.contents);
-                            var parentPath = docFile.path + "/" + pngOutAssetsName + "/" + sheetName;
+                            var parentPath = decodeURI(docFile.path + "/" + pngOutAssetsName + "/" + sheetName);
                             //var parentPath = docFile.path.substr(0, docFile.path.length - 4) + "/" + pngOutAssetsName;
                             //var parentPath = docFile.parent.parent.fsName + "/" + pngOutAssetsName;
                             //alert("-----" + decodeURI(docFile.path) + "-------");
@@ -84,7 +84,7 @@ function parseFile(pat, assetsName, typeVal) {
                                 folder.create();
                             }
                             //判断表格第一列文字中是否存在"/" 如果有创建子级问价夹 
-                            if (tFileName.indexOf('/') != -1) {
+                            if (tFileName.indexOf('/') != -1) {//indexOf() 方法可返回某个指定的字符串值在字符串中首次出现的位置。
                                 // alert("这里是tFileName.indexOf)  "+tFileName.indexOf);	
                                 var nFileName = tFileName.split("/");
                                 var nFileName = nFileName[0]; //获取表格第一列内容中的/前的文字
@@ -99,7 +99,7 @@ function parseFile(pat, assetsName, typeVal) {
                             //处理固定像素
                             // alert("这里是dan   "+dan);
                             if (type == "type1") { //alert("这里是dan2   "+dan);
-                                var outfile = new File(parentPath + "/" + tFileName + ".png"); //保存图片到
+                                var outfile = new File(decodeURI(parentPath + "/" ) + tFileName + ".png"); //保存图片到
                                 //alert("这里是outfile   "+outfile);
                                 doc.exportDocument(outfile, ExportType.SAVEFORWEB, saveOption);
                                 //alert("这里是000000000000000   "); 
@@ -115,7 +115,8 @@ function parseFile(pat, assetsName, typeVal) {
                                 //剪裁画布大小 到 图层实际像素 
                                 cropDounds();
                                 //web方式保存图片到指定目录
-                                var outfile = new File(parentPath + "/" + tFileName + ".png"); //保存图片到
+                                var outfile = new File(decodeURI(parentPath + "/" )+ tFileName + ".png"); //保存图片到
+                                
                                 //$.writeln(outfile);
                                 doc.exportDocument(outfile, ExportType.SAVEFORWEB, saveOption);
                                 //还原历史记录到打开时
@@ -131,7 +132,8 @@ function parseFile(pat, assetsName, typeVal) {
                                 //延申选区
 
                                 //var doc = app.activeDocument;
-                                var type2 = SelectionType.EXTEND;//延申选区
+                                //var type2 = SelectionType.EXTEND;//延申选区
+                                var type2 = SelectionType.REPLACE//替换选区
                                 var feather = 0;//表示构建选区时的羽化值
                                 var antiAlias = true;//表示构建选区时是否抗锯齿。
                                 //当前图层边界信息
@@ -149,7 +151,7 @@ function parseFile(pat, assetsName, typeVal) {
                                 //剪裁画布大小 到 图层实际像素 
                                 cropDounds();
                                 //web方式保存图片到指定目录
-                                var outfile = new File(parentPath + "/" + tFileName + ".png"); //保存图片到
+                                var outfile =new File(decodeURI(parentPath + "/" )+  tFileName + ".png"); //保存图片到
                                 //$.writeln(outfile);
                                 doc.exportDocument(outfile, ExportType.SAVEFORWEB, saveOption);
                                 //还原历史记录到打开时

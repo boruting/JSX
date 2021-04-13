@@ -50,7 +50,8 @@ window.onload=function(){
     });
     $("#ArtText").mouseup(function () {
                    
-        css.evalScript('$.evalFile("' + str + "/jsx/ArtTextN.jsx" + '")');
+        //css.evalScript('$.evalFile("' + str + "/jsx/ArtTextN.jsx" + '")');
+        css.evalScript('$.evalFile("' + str + "/jsx/ArtTextTwo.jsx" + '")');
     });
     $("#titleArtText").mouseup(function () {
                    

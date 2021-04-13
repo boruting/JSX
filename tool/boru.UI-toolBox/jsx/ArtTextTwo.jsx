@@ -1,12 +1,9 @@
 ﻿/**
  * @author boru
  * @name 多文本样式导出脚本
- * @description 同一个尺寸多个文本样式 导出 png图片 脚本(可扩展文本实际像素大小) psd文件的文本图层需要和表格 E列(对应图层) 内容相同
+ * @description 两个文本图层类型 导出
  * @weixin JackdawTing
- * @date 2020-09-21 创建
-                    需要表格名称和psd文档名一致
- * @date 2020-12-02 添加初始化 图层全隐藏处理 layer_.visible = false;
- *
+ * @date 2021-04-13 创建
  */
 var file = File($.fileName);
 var p = decodeURI(file.parent.parent);
@@ -31,7 +28,7 @@ function xlsxData() {
   var fileName = filePaths[filePaths.length - 1];
   var fileNames = fileName.split(".");
   //var pat = docFile.path + "/" + fileNames[0] + ".xlsx";
-  var pat = "D:/sg2/psd/文档/test.xlsx";
+  var pat = "D:/sg2/psd/文档/页签1.xlsx";
   if (pat.exists) {
     $.writeln("保存");
   }

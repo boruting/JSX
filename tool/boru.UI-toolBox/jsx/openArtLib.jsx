@@ -1,5 +1,5 @@
 ﻿//定义一个变量[sampleDoc]，用来表示硬盘上的一个图片文档。
-var sampleDoc = File("E:/至尊霸主/UI/psd/常用组件.psd");
+var sampleDoc = File("D:/sg2/psd/lib/组件/组件_库.psd");
 open(sampleDoc);
 // //定义一个变量[message]，用来表示一个字符串。
 // var message = "您要打开示例文档吗？";
