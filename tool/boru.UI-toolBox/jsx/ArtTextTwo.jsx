@@ -28,7 +28,8 @@ function xlsxData() {
   var fileName = filePaths[filePaths.length - 1];
   var fileNames = fileName.split(".");
   //var pat = docFile.path + "/" + fileNames[0] + ".xlsx";
-  var pat = "D:/sg2/psd/文档/章节设定1.xlsx";
+  var pro = prompt("输入文件名", "页签1", "");
+  var pat = "D:/sg2/psd/文档/" + pro + ".xlsx ";
   if (pat.exists) {
     $.writeln("保存");
   }
@@ -37,11 +38,12 @@ function xlsxData() {
   saveOption = new ExportOptionsSaveForWeb();
   saveOption.format = SaveDocumentType.PNG;
   saveOption.PNG8 = false;
-
+ 
   if (excelFile.exists) {
     var lines = getExcelLines(excelFile);
     if (lines) {
       var len = lines.length;
+      
       if (len > 0) {
         for (var i = 1; i < len; i++) { //从第二行开始读
           var line = lines[i];
@@ -50,11 +52,11 @@ function xlsxData() {
           var translate = line[2]; //翻译的内容
           var ignore = line[3]; //检测第4列是否内用是否等于"不导出"
           var layerName = line[4]; //第5列 对应图层 
+          var exp_num = 0;//导出计数
 
-
-67
+          67
           if (ignore != 1) {
-
+            
             if (text.indexOf("/" > 1)) {
 
               var txt = text.split("/");
@@ -67,7 +69,7 @@ function xlsxData() {
             var num_ = 0;
             for (var j = 0; j < layers.length; j++) {
               var layer = layers[j];
-              
+
               if (layer.layers) {
                 // alert("替换文本用psd，不允许有子文件夹");
                 continue;
@@ -79,13 +81,15 @@ function xlsxData() {
                   textItem = layer.textItem;
                   textItem.contents = txt_1.replace(/&#10;/g, "\n").replace(/&#13;/g, "\r").replace(/\r?\n/g, "\r");
                   num_ += 1;
+                 
                 }
                 if (layer.name == "txt_2") {
                   textItem = layer.textItem;
                   textItem.contents = txt_2.replace(/&#10;/g, "\n").replace(/&#13;/g, "\r").replace(/\r?\n/g, "\r");
                   num_ += 1;
+                  
                 }
-                if(num_>=2){
+                if (num_ >= 2) {
                   //num_ = 0;
                   break;
                 }
@@ -104,14 +108,15 @@ function xlsxData() {
             var outfile = new File(parentPath + "/" + tFileName + ".png"); //保存图片到
 
             doc.exportDocument(outfile, ExportType.SAVEFORWEB, saveOption); //保存
-            
+            exp_num += 1;
+
 
 
           }
         }
       }
     }
-    alert("成功 完成" + "\n导出 " + (len - 1) + "张 png图片");
+    alert("成功 完成" + "\n导出 " + (exp_num) + "张 png图片");
   } else {
     alert("失败 对应xlsx文档错误\n请核对 xlsx文件名 是否 与 psd文件名 相同");
   }
