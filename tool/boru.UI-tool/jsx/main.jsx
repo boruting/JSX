@@ -15,6 +15,7 @@ var initEnzymes = function (in_extendPath,JsxType){
         $.evalFile(extendPath + "/js/helper.js");
         $.evalFile(extendPath + "/jsx/outputText/handlePX.jsx");
         $.evalFile(extendPath + "/jsx/outputText/parseFile.jsx");
+        
         $.global.parseFile = parseFile; //解析 excel 文档并 切图 输出
         return;
 
